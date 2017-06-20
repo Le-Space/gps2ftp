@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">GPS2FTP</string>
+    <string name="action_settings">Settings
+    </string>
+    <string name="appwidget_host">ftp.le-space.de</string>
+
+    <string name="host">Host</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="remoteDirectory">Remote Directory</string>
+
+    <string name="save_widget">Save</string>
+
+</resources>
