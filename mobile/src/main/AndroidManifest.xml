@@ -45,7 +45,10 @@
             </intent-filter>
         </activity>
 
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCl5RYonTX2Pg83Lvys7cjlcQTrQrgWRm4"/>
+        <service
+            android:name=".FetchAddressIntentService"
+            android:exported="false"/>
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/googleMapsApiKey"/>
     </application>
 
 </manifest>

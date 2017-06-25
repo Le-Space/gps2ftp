@@ -1,17 +1,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#09C"
+                android:background="@color/colorPrimary"
                 android:padding="@dimen/widget_margin">
-
-   <!-- <TextView
+<!--
+   <TextView
         android:id="@+id/appwidget_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#09C"
+        android:background="@color/colorPrimary"
         android:contentDescription="@string/appwidget_text"
         android:text="@string/appwidget_text"
-        android:textColor="#ffffff"
+        android:textColor="@color/colorAccent"
         android:textSize="24sp"
         android:textStyle="bold|italic"
         android:layout_marginLeft="8dp"
@@ -19,17 +19,21 @@
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="129dp"/> -->
-    <Button
+
+   <Button
         android:id="@+id/updatePositon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true"
-        android:textSize="10sp"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:textSize="8sp"
+        android:background="@color/colorPrimaryDark"
         android:elevation="4dp"
-        android:text="PO"/>
+        android:text="@string/appwidget_text"/>
+
+   <!--
     <Button
         android:id="@+id/startConfiguration"
         android:layout_width="wrap_content"
@@ -39,6 +43,6 @@
         android:layout_marginRight="8dp"
         android:textSize="10sp"
         android:elevation="4dp"
-        android:text="S"/>
+        android:text="S"/> -->
 
 </RelativeLayout>

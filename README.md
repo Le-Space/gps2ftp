@@ -1,29 +1,43 @@
 GPS2FTP
 -------
 An app for Android devices which updates the current gps position to a defined ftp server.
-Useful in order to update your personal website with your current location.
-App works with the free Bootrap template of David Miller (https://twitter.com/davidmillerskt)
-https://github.com/Le-Space/startbootstrap-grayscale 
-(please use our fork as long its not included in the main project!)
+Useful in order to update your personal website with your current location. E.g. 
+we modified the free Bootrap template of David Miller (https://twitter.com/davidmillerskt)
+https://github.com/Le-Space/startbootstrap-grayscale in order to do this! 
+
+**(please use our fork as long its not included in the main project!)**
 
 e.g. see www.le-space.de or www.irinasenko.com
 
 Todo:
-- geoCode Address and display it on widget screen
-     - https://developer.android.com/training/location/display-address.html
+- add help video and help text to app (howto use this app)
 - write tests
 - test on cloud devices / genymotion 
 
 Nice2Haves:
+- update twitter location
+- update facebook location
+- update github location
 - check location in a certain frequence (every x minutes/hours)
 - handle REST-URL
 - handle multiple websites 
     
 Done:
+25.07.2017
+- when touching on position button - ask user before update
+- added googleApiKey to settings
+- added address and google api key to latlng.json
+22.07.2017
+- geoCode Address and display it on widget screen
+     - https://developer.android.com/training/location/display-address.html
+     - https://stackoverflow.com/questions/4510974/using-resultreceiver-in-android
+21.07.2017
+- transfer current zoom level to latlng.json
+
 20.07.2017
 - publish github / choose license 
     https://play.google.com/intl/en_us/badges/
-    
+
 19.07.2017
 - publish to playstore
     - create logo https://romannurik.github.io/AndroidAssetStudio/index.html

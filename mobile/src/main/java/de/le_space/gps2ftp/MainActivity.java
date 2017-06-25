@@ -2,11 +2,18 @@ package de.le_space.gps2ftp;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +25,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -44,6 +52,9 @@ public class MainActivity extends AppCompatActivity  implements OnMapReadyCallba
 	private CoordinatorLayout coordinatorLayout;
 	private Activity thisActivity;
 	private GoogleMap googleMap;
+	private String mAddressOutput;
+	protected Location mLastLocation;
+	private AddressResultReceiver mResultReceiver;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +67,8 @@ public class MainActivity extends AppCompatActivity  implements OnMapReadyCallba
 		final Context thisContext = this.getApplicationContext();
 		thisActivity = this;
 		coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+
+		mResultReceiver = new AddressResultReceiver(new Handler());
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		mFusedLocationClient = LocationServices.getFusedLocationProviderClient(thisContext);
@@ -70,9 +83,9 @@ public class MainActivity extends AppCompatActivity  implements OnMapReadyCallba
 						android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
 
 					// Provide an additional rationale to the user if the permission was not granted
-					// and the user would benefit from additional context for the use of the permission.
+					// and the user would benefit from additional activity for the use of the permission.
 					// For example, if the request has been denied previously.
-					Log.i(TAG, "Displaying contacts permission rationale to provide additional context.");
+					Log.i(TAG, "Displaying contacts permission rationale to provide additional activity.");
 
 					// Display a SnackBar with an explanation and a button to trigger the request.
 					Snackbar.make(view, "Requesting Permissions",
@@ -88,8 +101,6 @@ public class MainActivity extends AppCompatActivity  implements OnMapReadyCallba
 					//permissions have not been granted yet. Request them directly.
 					ActivityCompat.requestPermissions(thisActivity, PERMISSIONS_LOCATION, 0);
 				}
-
-
 			}
 		});
 
@@ -116,33 +127,22 @@ public class MainActivity extends AppCompatActivity  implements OnMapReadyCallba
 				@Override
 				public void onSuccess(Location location) {
 
-					Snackbar.make(coordinatorLayout, "Got position - updating FTP", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+					mLastLocation  = location; //save this for the Address Service
+					Snackbar.make(coordinatorLayout, "Got new position", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
-					double lat = location.getLatitude();
-					double lng = location.getLongitude();
+					// In some rare cases the location returned can be null
+					if (mLastLocation == null) {
+						return;
+					}
 
+					if (!Geocoder.isPresent()) {
+						Toast.makeText(MainActivity.this,
+								R.string.no_geocoder_available,
+								Toast.LENGTH_LONG).show();
+						return;
+					}
 
-					String jsonString = "{\n" +
-							"    \"lat\": \""+Double.toString(lat)+"\",\n" +
-							"    \"lng\": \""+Double.toString(lng)+"\"\n" +
-							"}";
-
-					//save our position to the device
-					saveTitlePref(getApplicationContext(),1, "lastPosition", jsonString);
-
-					LatLng latlng = new LatLng(lat, lat);
-
-					if(googleMap!=null)
-						googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng,9));
-					//and publish it to the ftp server
-					FTPUpdateTask ftpUpdate = new de.le_space.gps2ftp.FTPUpdateTask();
-					ftpUpdate.view = findViewById(R.id.coordinatorLayout);
-
-					ftpUpdate.SFTPHOST = loadTitlePref(thisActivity,1,"host");
-					ftpUpdate.SFTPUSER = loadTitlePref(thisActivity,1,"username");
-					ftpUpdate.SFTPPASS = loadTitlePref(thisActivity,1,"password");
-					ftpUpdate.SFTPWORKINGDIR = loadTitlePref(thisActivity,1,"remoteDirectory");
-					ftpUpdate.execute(jsonString);
+					startIntentService();
 				}
 			});
 		}
@@ -190,25 +190,144 @@ public class MainActivity extends AppCompatActivity  implements OnMapReadyCallba
 		}
 	}
 
+	protected void startIntentService() {
+		Intent intent = new Intent(this, FetchAddressIntentService.class);
+		intent.putExtra(Constants.RECEIVER, mResultReceiver);
+		intent.putExtra(Constants.LOCATION_DATA_EXTRA, mLastLocation);
+		startService(intent);
+	}
+
 	@Override
 	public void onMapReady(GoogleMap googleMap) {
 
 		try {
+			this.googleMap = googleMap;
+
 			JSONObject lastPosJson = new JSONObject(loadTitlePref(thisActivity,1,"lastPosition"));
 			Log.i(TAG, "lastPosition"+lastPosJson.toString());
 			LatLng latlng = new LatLng(lastPosJson.getDouble("lat"), lastPosJson.getDouble("lng"));
+			this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng,lastPosJson.getInt("zoom")));
+			//we put a marker to our current position
 			MarkerOptions marker = new MarkerOptions().position(latlng);
 			marker.title("I am here");
-			googleMap.addMarker(marker);
-		
+			this.googleMap.addMarker(marker);
 
 		} catch (JSONException e) {
 			Snackbar.make(coordinatorLayout, "Last position unknown or invalid",Snackbar.LENGTH_SHORT).show();
 			e.printStackTrace();
 
 		}
+	}
+
+	class AddressResultReceiver extends ResultReceiver {
 
 
+		public AddressResultReceiver(Handler handler) {
+			super(handler);
+		}
+
+		@Override
+		protected void onReceiveResult(int resultCode, Bundle resultData) {
+
+			double lat = mLastLocation.getLatitude();
+			double lng = mLastLocation.getLongitude();
+			int zoom = (int) googleMap.getCameraPosition().zoom;
+			String googleMapsApikey = loadTitlePref(getApplicationContext(),1,"googleMapsApiKey");
+
+			if(googleMapsApikey==null || googleMapsApikey.length()!=39)
+				googleMapsApikey=getString(R.string.googleMapsApiKey);
+
+			String jsonString = "{\n" +
+					"    \"lat\": \""+Double.toString(lat)+"\",\n" +
+					"    \"lng\": \""+Double.toString(lng)+"\",\n" +
+					"    \"zoom\": "+(zoom+1)+",\n" +
+					"    \"googleMapsApiKey\": "+googleMapsApikey+"\n" +
+					"}";
+
+			// Display the address string
+			// or an error message sent from the intent service.
+			mAddressOutput = resultData.getString(Constants.RESULT_DATA_KEY);
+
+			// Show a toast message if an address was found.
+			if (resultCode == Constants.SUCCESS_RESULT) {
+				//save our position to the device
+				saveTitlePref(getApplicationContext(),1, "lastPosition", jsonString);
+
+				LatLng latlng = new LatLng(lat, lng);
+
+				if(googleMap!=null)
+					googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng,zoom));
+
+				//save our position to the device
+				saveTitlePref(getApplicationContext(),1, "lastAddress", mAddressOutput);
+
+				jsonString = "{\n" +
+						"    \"lat\": \""+Double.toString(lat)+"\",\n" +
+						"    \"lng\": \""+Double.toString(lng)+"\",\n" +
+						"    \"address\": \""+mAddressOutput.replaceAll("\n","<br/>")+"\",\n" +
+						"    \"googleMapsApiKey\": \""+googleMapsApikey+"\",\n"+
+						"    \"zoom\": "+(zoom+1)+"\n" +
+						"}";
+
+				// Update text of widget button
+				Intent intent = new Intent(thisActivity,PositionUpdate.class);
+				intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+
+
+				ComponentName name = new ComponentName(getApplicationContext(), PositionUpdate.class);
+				int [] ids = AppWidgetManager.getInstance(getApplicationContext()).getAppWidgetIds(name);
+				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+				sendBroadcast(intent);
+
+				Toast.makeText(MainActivity.this,
+						getString(R.string.address_found)+":\n "+mAddressOutput,
+						Toast.LENGTH_LONG).show();
+			}
+
+			AlertDialog.Builder adb = new AlertDialog.Builder(thisActivity);
+			//adb.setView(R.layout.activity_main);
+			adb.setTitle(R.string.publish_ftp);
+			adb.setIcon(android.R.drawable.ic_dialog_alert);
+
+			final String finalJsonString = jsonString;
+			adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+				public void onClick(DialogInterface dialog, int which) {
+
+					//and publish it to the ftp server
+					PostFTPTaskListener<String> postTaskListener = new PostFTPTaskListener<String>() {
+						@Override
+						public void onError(String result) {
+							Intent intent = new Intent(thisActivity, PositionUpdateConfigureActivity.class);
+							intent.putExtra("error",result);
+							intent.putExtra("appWidgetId",1);
+							startActivity(intent);
+						}
+					};
+
+					FTPUpdateTask ftpUpdate = new de.le_space.gps2ftp.FTPUpdateTask(postTaskListener);
+					ftpUpdate.view = findViewById(R.id.coordinatorLayout);
+
+					ftpUpdate.SFTPHOST = loadTitlePref(thisActivity,1,"host");
+					ftpUpdate.SFTPUSER = loadTitlePref(thisActivity,1,"username");
+					ftpUpdate.SFTPPASS = loadTitlePref(thisActivity,1,"password");
+					ftpUpdate.SFTPWORKINGDIR = loadTitlePref(thisActivity,1,"remoteDirectory");
+					ftpUpdate.execute(finalJsonString);
+
+				} });
+
+			adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+
+					//finish();
+				} });
+			adb.show();
+
+		}
+	}
+	public interface PostFTPTaskListener<K> {
+		// K is the type of the result object of the async task
+		void onError(K result);
 	}
 }
 

@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * Created by Nico Krause (nico@le-space.de) on 16.06.17. (Le Space UG)
  */
-public class FTPUpdateTask extends AsyncTask<String, Integer, Void> {
+public class FTPUpdateTask extends AsyncTask<String, Integer, String> {
 
 	private static final String TAG = "Main";
 
@@ -26,10 +26,19 @@ public class FTPUpdateTask extends AsyncTask<String, Integer, Void> {
 	public static String SFTPUSER = "le-space";
 	public static String SFTPPASS = "omnamahshivaya2017!";
 	public static String SFTPWORKINGDIR = "/home/le-space/public_html";
+
 	public View view;
 	Exception ex;
 
-	protected Void doInBackground(String... jsonContent) {
+	private MainActivity.PostFTPTaskListener<String> postTaskListener;
+
+	FTPUpdateTask(MainActivity.PostFTPTaskListener<String> postTaskListener) {
+		this.postTaskListener = postTaskListener;
+	};
+
+
+
+	protected String doInBackground(String... jsonContent) {
 
 		Log.d(TAG, "starting ftp transfer for position:" + jsonContent);
 
@@ -56,7 +65,6 @@ public class FTPUpdateTask extends AsyncTask<String, Integer, Void> {
 			Log.d(TAG, "finished ftp transfer to:" + SFTPHOST);
 
 		} catch (Exception ex) {
-
 			this.ex = ex;
 			publishProgress(0);
 			Log.e(TAG, ex.getMessage());
@@ -69,13 +77,14 @@ public class FTPUpdateTask extends AsyncTask<String, Integer, Void> {
 	@Override
 	protected void onProgressUpdate(Integer... values) {
 		super.onProgressUpdate(values);
+		Snackbar.make(view, "Please check FTP-Config:"+ex.getMessage(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
-		Snackbar.make(view, ex.getMessage(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+		postTaskListener.onError(ex.getMessage());
 	}
 
 	@Override
-	protected void onPostExecute(Void aVoid) {
-		super.onPostExecute(aVoid);
+	protected void onPostExecute(String result) {
+		super.onPostExecute(result);
 	}
 }
 

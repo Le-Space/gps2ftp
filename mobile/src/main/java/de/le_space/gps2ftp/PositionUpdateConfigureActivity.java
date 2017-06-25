@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 /**
  * The configuration screen for the {@link PositionUpdate PositionUpdate} AppWidget.
@@ -18,13 +19,11 @@ public class PositionUpdateConfigureActivity extends Activity {
 	private static final String PREF_PREFIX_KEY = "appwidget_";
 	int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
-	//EditText mAppWidgetText;
 	EditText mAppWidgetHost;
 	EditText mAppWidgetUsername;
 	EditText mAppWidgetPassword;
 	EditText mAppWidgetRemoteDirectory;
-
-
+	EditText mAppWidgetGoogleMapsApiKey;
 
 	View.OnClickListener mOnClickListenerSave = new View.OnClickListener() {
 		public void onClick(View v) {
@@ -32,17 +31,17 @@ public class PositionUpdateConfigureActivity extends Activity {
 			final Context context = PositionUpdateConfigureActivity.this;
 
 			// When the button is clicked, store the string locally
-//			String widgetText = mAppWidgetText.getText().toString();
 			String widgetHost = mAppWidgetHost.getText().toString();
 			String widgetUsername = mAppWidgetUsername.getText().toString();
 			String widgetPassword = mAppWidgetPassword.getText().toString();
 			String widgetRemoteDirectory = mAppWidgetRemoteDirectory.getText().toString();
+			String widgetGoogleMapsApiKey= mAppWidgetGoogleMapsApiKey.getText().toString();
 
-			//saveTitlePref(context, mAppWidgetId, widgetText);
 			saveTitlePref(context, mAppWidgetId, "host", widgetHost);
 			saveTitlePref(context, mAppWidgetId, "username", widgetUsername);
 			saveTitlePref(context, mAppWidgetId, "password", widgetPassword);
 			saveTitlePref(context, mAppWidgetId, "remoteDirectory", widgetRemoteDirectory);
+			saveTitlePref(context, mAppWidgetId, "googleMapsApiKey", widgetGoogleMapsApiKey);
 
 
 			// It is the responsibility of the configuration activity to update the app widget
@@ -77,7 +76,7 @@ public class PositionUpdateConfigureActivity extends Activity {
 			return titleValue;
 		} else {
 			return "";
-		//	return context.getString(R.string.appwidget_text);
+		//	return activity.getString(R.string.appwidget_text);
 		}
 	}
 
@@ -101,6 +100,7 @@ public class PositionUpdateConfigureActivity extends Activity {
 		mAppWidgetPassword = (EditText) findViewById(R.id.appwidget_password);
 		mAppWidgetUsername = (EditText) findViewById(R.id.appwidget_username);
 		mAppWidgetRemoteDirectory = (EditText) findViewById(R.id.appwidget_remoteDirectory);
+		mAppWidgetGoogleMapsApiKey = (EditText) findViewById(R.id.appwidget_googleMapsApiKey);
 
 		findViewById(R.id.save_button).setOnClickListener(mOnClickListenerSave);
 
@@ -110,6 +110,12 @@ public class PositionUpdateConfigureActivity extends Activity {
 		if (extras != null) {
 			mAppWidgetId = extras.getInt(
 					AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+			mAppWidgetId=1; //we overwrite this here since we only have one widget at the moment
+
+			String error = extras.getString("error");
+			if(error!=null){
+				Toast.makeText(this,error+" - please check hostname, username, password and directory",Toast.LENGTH_LONG).show();
+			}
 		}
 
 		// If this activity was started with an intent without an app widget ID, finish with an error.
@@ -117,10 +123,12 @@ public class PositionUpdateConfigureActivity extends Activity {
 			finish();
 			return;
 		}
+
 		mAppWidgetHost.setText(loadTitlePref(PositionUpdateConfigureActivity.this, mAppWidgetId, "host"));
 		mAppWidgetUsername.setText(loadTitlePref(PositionUpdateConfigureActivity.this, mAppWidgetId, "username"));
 		mAppWidgetPassword.setText(loadTitlePref(PositionUpdateConfigureActivity.this, mAppWidgetId ,"password"));
 		mAppWidgetRemoteDirectory.setText(loadTitlePref(PositionUpdateConfigureActivity.this, mAppWidgetId, "remoteDirectory"));
+		mAppWidgetGoogleMapsApiKey.setText(loadTitlePref(PositionUpdateConfigureActivity.this, mAppWidgetId, "googleMapsApiKey"));
 
 	}
 }

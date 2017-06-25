@@ -19,40 +19,33 @@ public class PositionUpdate extends AppWidgetProvider {
 	public static String UPDATE_POSITION_ACTION = "UpdatePositionAction";
 	public static String START_CONFIGURATION_ACTION = "StartConfigurationAction";
 
-	static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-	                            int appWidgetId) {
+	static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,int appWidgetId) {
 
-		CharSequence widgetHost = PositionUpdateConfigureActivity.loadTitlePref(context, appWidgetId, "host");
-		CharSequence widgetUsername = PositionUpdateConfigureActivity.loadTitlePref(context, appWidgetId, "username");
-		CharSequence widgetPassword = PositionUpdateConfigureActivity.loadTitlePref(context, appWidgetId, "password");
-		CharSequence widgetRemoteDirectory = PositionUpdateConfigureActivity.loadTitlePref(context, appWidgetId, "remoteDirectory");
-
-		// Construct the RemoteViews object
+		//appWidgetId = 53;
+		CharSequence widgetLastAddress = PositionUpdateConfigureActivity.loadTitlePref(context, 1, "lastAddress");
 		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.position_update);
-		views.setTextViewText(R.id.appwidget_host, widgetHost);
-		views.setTextViewText(R.id.appwidget_username, widgetUsername);
-		views.setTextViewText(R.id.appwidget_password, widgetPassword);
-		views.setTextViewText(R.id.appwidget_remoteDirectory, widgetRemoteDirectory);
+		views.setTextViewText(R.id.updatePositon, widgetLastAddress);
 
 		Intent intentUpdate = new Intent(context, MainActivity.class);
 		intentUpdate.setAction(UPDATE_POSITION_ACTION);
 		intentUpdate.putExtra("direct","true");
-		intentUpdate.putExtra("appWidgetId",1);
+		intentUpdate.putExtra("appWidgetId",appWidgetId);
 
 		PendingIntent piUpdate = PendingIntent.getActivity(context, 0, intentUpdate, 0);
 		views.setOnClickPendingIntent(R.id.updatePositon, piUpdate);
 
-		Intent intentConfig = new Intent(context, PositionUpdateConfigureActivity.class);
+		/*Intent intentConfig = new Intent(activity, PositionUpdateConfigureActivity.class);
 		intentConfig.setAction(START_CONFIGURATION_ACTION);
-		PendingIntent piConfig = PendingIntent.getActivity(context, 0, intentConfig, 0);
+		PendingIntent piConfig = PendingIntent.getActivity(activity, 0, intentConfig, 0);
 
-		views.setOnClickPendingIntent(R.id.startConfiguration, piConfig);
+		views.setOnClickPendingIntent(R.id.startConfiguration, piConfig);*/
 
 		// Instruct the widget manager to update the widget
 		appWidgetManager.updateAppWidget(appWidgetId, views);
 	}
 
 	private static final String ACTION_CLICK = "ACTION_CLICK_WIDGET";
+
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		String intentAction = intent.getAction();
