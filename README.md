@@ -10,8 +10,7 @@ https://github.com/Le-Space/startbootstrap-grayscale in order to do this!
 **(please use our fork as long its not included in the main project!)**
 Examples: see www.le-space.de or www.irinasenko.com (scroll down to the bottom of the page)
 
-![gps2ftp badge](https://github.com/Le-Space/gps2ftp/marketing/ic_launcher_round/web_hi_res_512_small.png)
-
+![gps2ftp badge](https://github.com/Le-Space/gps2ftp/raw/master/marketing/ic_launcher_round/web_hi_res_512_small.png)
 
 Todo:
 - travis-ci.org
