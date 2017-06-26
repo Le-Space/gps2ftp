@@ -13,6 +13,9 @@ android:
     - android-26
     - sys-img-armeabi-v7a-android-26
     - extra-android-m2repository
+    - extra-google-google_play_services
+    - extra-google-m2repository
+    - addon-google_apis-google-26
 
 #before_script:
   # Create and start emulator
