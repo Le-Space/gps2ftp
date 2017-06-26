@@ -1,3 +1,5 @@
+![Travis badge](https://api.travis-ci.org/Le-Space/gps2ftp.svg?branch=master)
+
 GPS2FTP
 -------
 An app for Android devices which updates the current gps position to a defined ftp server.
@@ -6,12 +8,9 @@ we modified the free Bootrap template of David Miller (https://twitter.com/david
 https://github.com/Le-Space/startbootstrap-grayscale in order to do this! 
 
 **(please use our fork as long its not included in the main project!)**
-![Travis badge](https://github.com/Le-Space/gps2ftp/marketing/ic_launcher_round/web_hi_res_512.png)
+Examples: see www.le-space.de or www.irinasenko.com (scroll down to the bottom of the page)
 
-
-e.g. see www.le-space.de or www.irinasenko.com
-![Travis badge](https://api.travis-ci.org/Le-Space/gps2ftp.svg?branch=master)
-
+![gps2ftp badge](https://github.com/Le-Space/gps2ftp/marketing/ic_launcher_round/web_hi_res_512_small.png)
 
 
 Todo:
