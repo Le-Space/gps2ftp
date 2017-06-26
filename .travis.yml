@@ -1,23 +1,32 @@
 language: android
 jdk: oraclejdk8
 sudo: false
+env:
+ global:
+    - ANDROID_API_LEVEL=25
+    - ANDROID_BUILD_TOOLS_VERSION=26.0.0
 
 android:
   components:
     - tools
     - platform-tools
-    - tools
-    - build-tools-25.0.3
-    - android-25
-    - sys-img-armeabi-v7a-android-25
-    - extra-android-m2repository
+    # The BuildTools version used by your project
+    - build-tools-$ANDROID_BUILD_TOOLS_VERSION
+    # The SDK version used to compile your project
+    - android-$ANDROID_API_LEVEL
+    # Additional components
     - extra-google-google_play_services
     - extra-google-m2repository
-    - addon-google_apis-google-25
+    - extra-android-m2repository
+    - addon-google_apis-google-$ANDROID_API_LEVEL
   licenses:
-    - 'android-sdk-preview-license-52d11cd2'
+    - 'android-sdk-preview-license-.+'
     - 'android-sdk-license-.+'
     - 'google-gdk-license-.+'
+
+before_script:
+    - mkdir -p "$ANDROID_HOME/licenses"
+    - cp ./google-licenses/* "$ANDROID_HOME/licenses/"
 
 #before_script:
   # Create and start emulator
@@ -26,4 +35,5 @@ android:
 #  - android-wait-for-emulator
 #  - adb shell input keyevent 82 &
 
-script: ./gradlew build
+script:
+    - ./gradlew build check
