@@ -16,7 +16,16 @@ Examples: see www.le-space.de or www.irinasenko.com (scroll down to the bottom o
 Todo:
 - travis-ci.org
     - https://travis-ci.org/
-    - https://docs.travis-ci.com/user/languages/android/
+    https://developer.android.com/studio/build/building-cmdline.html
+    - wwtd https://github.com/grosser/wwtd
+    - travis client https://github.com/travis-ci/travis.rb
+    - example for android
+       - https://docs.travis-ci.com/user/languages/android/
+       - https://github.com/pestrada/android-tdd-playground/blob/master/.travis.yml
+    - run travis locally 
+       - https://docs.travis-ci.com/user/common-build-problems/#Troubleshooting-Locally-in-a-Docker-Image
+       - (couldn't figure that out)  https://stackoverflow.com/questions/21053657/how-to-run-travis-ci-locally
+    - using docker in travis https://blog.travis-ci.com/2015-08-19-using-docker-on-travis-ci/
     - problems
         - check .travis.yml http://lint.travis-ci.org/
         - https://stackoverflow.com/questions/40208309/travis-ci-build-failing-on-android-app-unsupported-major-minor-version-52
