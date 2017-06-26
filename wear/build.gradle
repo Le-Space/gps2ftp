@@ -6,7 +6,7 @@ android {
     defaultConfig {
         applicationId "de.le_space.gps2ftp"
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
     }
