@@ -18,14 +18,14 @@ notifications:
 android:
   components: # Cookbooks version: https://github.com/travis-ci/travis-cookbooks/tree/9c6cd11
     - tools # Update preinstalled tools from revision 24.0.2 to 24.4.1
-    - build-tools-25.0.3 # Match build-tools version used in build.gradle
+    - build-tools-26.0.0 # Match build-tools version used in build.gradle
     - platform-tools # Update platform-tools to revision 25.0.3+
     - tools # Update tools from revision 24.4.1 to 25.2.5
 
 env:
   global:
     - DIR=gps2ftp # Project directory
-    - API=25 # Android API level 25 by default
+    - API=26 # Android API level 25 by default
     - TAG=google_apis # Google APIs by default, alternatively use default
     - ABI=armeabi-v7a # ARM ABI v7a by default
     - QEMU_AUDIO_DRV=none # Disable emulator audio to avoid warning
@@ -37,6 +37,7 @@ env:
 
 matrix:
   include: # More Emulator API levels to build in parallel
+    - env: API=25
     - env: API=24
     - env: API=23
     - env: API=22
@@ -71,7 +72,7 @@ install:
   - sdkmanager --uninstall "build-tools;21.1.2"
   # Update sdk tools to latest version and install/update components
   - echo yes | sdkmanager "tools"
-  - echo yes | sdkmanager "platforms;android-25" # Latest platform required by SDK tools
+  - echo yes | sdkmanager "platforms;android-26" # Latest platform required by SDK tools
   - echo yes | sdkmanager "platforms;android-${API}" # Android platform required by emulator
   - echo yes | sdkmanager "extras;android;m2repository"
   - echo yes | sdkmanager "extras;google;m2repository"
@@ -83,7 +84,7 @@ install:
   - emulator -avd acib -engine classic -no-window -camera-back none -camera-front none -verbose -qemu -m 512 &
   # Start adbd, wait for device connected and show android serial
   - adb wait-for-device get-serialno
-  # Show version and download Gradle Wrapper if it's not already cached ${DIR} 
+  # Show version and download Gradle Wrapper if it's not already cached ${DIR}
   - cd ${TRAVIS_BUILD_DIR}/ && ./gradlew --version
   # Clean project and download missing dependencies and components
   - cd ${TRAVIS_BUILD_DIR}/ && ./gradlew clean build

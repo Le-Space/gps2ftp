@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "de.le_space.gps2ftp"
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
     }
@@ -20,7 +20,11 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.google.android.support:wearable:2.0.2'
-    compile 'com.google.android.gms:play-services-wearable:10.2.6'
-    compile 'com.google.android.gms:play-services-maps:10.2.6'
+    compile 'com.google.android.support:wearable:2.0.3'
+   // compile 'com.android.support:support-compat:26.0.0-beta2'
+   // compile 'com.android.support:recyclerview:26.0.0-beta2'
+  //  compile 'com.android.support:percent:26.0.0-beta2'
+    provided 'com.google.android.wearable:wearable:2.0.3'
+    compile 'com.google.android.gms:play-services-wearable:11.0.1'
+    compile 'com.google.android.gms:play-services-maps:11.0.1'
 }

@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -108,9 +109,13 @@ public class MainActivity extends AppCompatActivity  implements OnMapReadyCallba
 		mapFragment.getMapAsync(this);
 
 		Intent intent = getIntent();
-		if(intent.getStringExtra("direct")!=null){
-			getLastLocation(intent.getIntExtra("appWidgetId",1));
+		if (intent.getStringExtra("direct") != null) {
+			getLastLocation(intent.getIntExtra("appWidgetId", 1));
 		}
+		// ATTENTION: This was auto-generated to handle app links.
+		Intent appLinkIntent = getIntent();
+		String appLinkAction = appLinkIntent.getAction();
+		Uri appLinkData = appLinkIntent.getData();
 	}
 
 	public void getLastLocation(final int appWidgetId) {

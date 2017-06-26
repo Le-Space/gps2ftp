@@ -27,7 +27,7 @@ Bugs:
 - first time installation does not show current position 
 - first time installation shows only strange error and does not switch to config
 - first time installation does not show help
-- widget example image is not updated 
+
 
 Nice2Haves:
 - integrate snazzympas-browser
@@ -42,6 +42,8 @@ Nice2Haves:
 - handle multiple websites 
     
 Done:
+26.07.2017
+- update widget example image 
 25.07.2017
 - when touching on position button - ask user before update
 - added googleApiKey to settings

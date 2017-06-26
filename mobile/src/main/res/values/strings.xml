@@ -7,6 +7,8 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="remoteDirectory">Remote Directory</string>
+    <string name="googleMaps">Google Maps Api Key</string>
+
     <string name="save_widget">Save</string>
     <string name="publish_ftp">Publish found geodata now?</string>
     <string name="service_not_available">Service not available</string>

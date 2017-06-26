@@ -1,7 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorPrimary"
                 android:padding="@dimen/widget_margin">
 <!--
    <TextView
@@ -28,9 +27,8 @@
         android:layout_marginRight="8dp"
         android:layout_centerInParent="true"
         android:layout_gravity="center_vertical|center_horizontal"
-        android:textSize="8sp"
+        android:textSize="12sp"
         android:background="@color/colorPrimaryDark"
-        android:elevation="4dp"
         android:text="@string/appwidget_text"/>
 
    <!--

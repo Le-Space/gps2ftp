@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PositionUpdateWidget</string>
+    <string name="app_name">GPS2FTP</string>
     <string name="intro_text">Long click to exit
         the map.
     </string>
