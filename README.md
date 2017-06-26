@@ -16,12 +16,18 @@ Todo:
     - problems
         - check .travis.yml http://lint.travis-ci.org/
         - https://stackoverflow.com/questions/40208309/travis-ci-build-failing-on-android-app-unsupported-major-minor-version-52
-        
+        - license https://github.com/travis-ci/travis-ci/issues/6555
 - github
     - gps2ftp logo in README.md einfügen
 - add help video and help text to app (howto use this app)
 - write tests
 - test on cloud devices / genymotion 
+
+Bugs:
+- first time installation does not show current position 
+- first time installation shows only strange error and does not switch to config
+- first time installation does not show help
+- widget example image is not updated 
 
 Nice2Haves:
 - integrate snazzympas-browser
