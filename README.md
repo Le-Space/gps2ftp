@@ -10,13 +10,21 @@ https://github.com/Le-Space/startbootstrap-grayscale in order to do this!
 e.g. see www.le-space.de or www.irinasenko.com
 
 Todo:
+- travis-ci.org
+    https://travis-ci.org/
+- github
+    - gps2ftp logo in README.md einfügen
 - add help video and help text to app (howto use this app)
 - write tests
 - test on cloud devices / genymotion 
 
 Nice2Haves:
+- integrate snazzympas-browser
+    https://github.com/stephenmcd/snazzymaps-browser
 - update twitter location
+    https://dev.twitter.com/rest/reference/post/account/update_profile
 - update facebook location
+    https://developers.facebook.com/docs/graph-api/reference/location/
 - update github location
 - check location in a certain frequence (every x minutes/hours)
 - handle REST-URL
