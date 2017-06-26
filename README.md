@@ -16,6 +16,7 @@ Todo:
 - travis-ci.org
     - https://travis-ci.org/
     https://developer.android.com/studio/build/building-cmdline.html
+    - interesting howto for android https://distillery.com/blog/painless-travis-cicd-android-project/
     - wwtd https://github.com/grosser/wwtd
     - travis client https://github.com/travis-ci/travis.rb
     - example for android
