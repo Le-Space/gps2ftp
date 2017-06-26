@@ -11,7 +11,12 @@ e.g. see www.le-space.de or www.irinasenko.com
 
 Todo:
 - travis-ci.org
-    https://travis-ci.org/
+    - https://travis-ci.org/
+    - https://docs.travis-ci.com/user/languages/android/
+    - problems
+        - check .travis.yml http://lint.travis-ci.org/
+        - https://stackoverflow.com/questions/40208309/travis-ci-build-failing-on-android-app-unsupported-major-minor-version-52
+        
 - github
     - gps2ftp logo in README.md einfügen
 - add help video and help text to app (howto use this app)
