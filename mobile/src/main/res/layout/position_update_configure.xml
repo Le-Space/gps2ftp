@@ -6,18 +6,28 @@
               android:layout_height="wrap_content"
               android:orientation="vertical"
               android:padding="16dp">
+  <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="8dp"
+      android:text="@string/protocol"/>
 
-  <!--  <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="@string/configure"/>
+  <RadioGroup
+      android:id="@+id/appwidget_protocol"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content" >
+      <RadioButton
+          android:id="@+id/HTTP"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="HTTP(S)"/>
 
-    <EditText
-        android:id="@+id/appwidget_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"/> -->
+      <RadioButton
+          android:id="@+id/SFTP"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="SFTP"/>
+  </RadioGroup>
 
     <TextView
         android:layout_width="match_parent"

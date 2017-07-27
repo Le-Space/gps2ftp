@@ -3,11 +3,15 @@ package de.le_space.gps2ftp;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
+
+import static de.le_space.gps2ftpcommon.Constants.deleteTitlePref;
+import static de.le_space.gps2ftpcommon.Constants.loadTitlePref;
 
 /**
  * Implementation of App Widget functionality.
@@ -21,8 +25,7 @@ public class PositionUpdate extends AppWidgetProvider {
 
 	static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,int appWidgetId) {
 
-		//appWidgetId = 53;
-		CharSequence widgetLastAddress = PositionUpdateConfigureActivity.loadTitlePref(context, 1, "lastAddress");
+		CharSequence widgetLastAddress = loadTitlePref(context, 1, "lastAddress");
 		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.position_update);
 		views.setTextViewText(R.id.updatePositon, widgetLastAddress);
 
@@ -33,29 +36,28 @@ public class PositionUpdate extends AppWidgetProvider {
 
 		PendingIntent piUpdate = PendingIntent.getActivity(context, 0, intentUpdate, 0);
 		views.setOnClickPendingIntent(R.id.updatePositon, piUpdate);
-
-		/*Intent intentConfig = new Intent(activity, PositionUpdateConfigureActivity.class);
-		intentConfig.setAction(START_CONFIGURATION_ACTION);
-		PendingIntent piConfig = PendingIntent.getActivity(activity, 0, intentConfig, 0);
-
-		views.setOnClickPendingIntent(R.id.startConfiguration, piConfig);*/
-
 		// Instruct the widget manager to update the widget
 		appWidgetManager.updateAppWidget(appWidgetId, views);
 	}
 
 	private static final String ACTION_CLICK = "ACTION_CLICK_WIDGET";
-
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		String intentAction = intent.getAction();
 		Log.d(TAG, "something happened on widget..");
 		if (intentAction.equals(ACTION_CLICK)) {
-
 			Bundle extras = intent.getExtras();
 			Integer appWidgetId = extras.getInt("appwidgetid");
 			Log.d(TAG, "clicked on widget.."+appWidgetId);
-		} else {
+		}
+		else if(intentAction.equals(AppWidgetManager.ACTION_APPWIDGET_UPDATE)){ //Update already saved new address from FetchAddressIntentService
+
+			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+			ComponentName thisAppWidget = new ComponentName(context.getPackageName(), PositionUpdate.class.getName());
+			int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisAppWidget);
+
+			onUpdate(context, appWidgetManager, appWidgetIds);
+		}else {
 			super.onReceive(context, intent);
 		}
 	}
@@ -74,7 +76,7 @@ public class PositionUpdate extends AppWidgetProvider {
 		Log.d(TAG, "onDeleted");
 		// When the user deletes the widget, delete the preference associated with it.
 		for (int appWidgetId : appWidgetIds) {
-			PositionUpdateConfigureActivity.deleteTitlePref(context, appWidgetId);
+			deleteTitlePref(context, appWidgetId);
 		}
 	}
 

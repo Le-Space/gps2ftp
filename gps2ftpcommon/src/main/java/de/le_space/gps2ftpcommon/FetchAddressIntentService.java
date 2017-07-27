@@ -1,4 +1,4 @@
-package de.le_space.gps2ftp;
+package de.le_space.gps2ftpcommon;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -7,11 +7,9 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.ResultReceiver;
-import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -76,29 +74,29 @@ public class FetchAddressIntentService extends IntentService {
 				errorMessage = getString(R.string.no_address_found);
 				Log.e(TAG, errorMessage);
 			}
-			deliverResultToReceiver(Constants.FAILURE_RESULT, errorMessage);
+
+			deliverResultToReceiver(Constants.FAILURE_RESULT,errorMessage, null, null, null);
 
 		} else {
 
 			Address address = addresses.get(0);
-			ArrayList<String> addressFragments = new ArrayList<String>();
-
-			// Fetch the address lines using getAddressLine,
-			// join them, and send them to the thread.
+			StringBuilder addressFragments = new StringBuilder();
 			for(int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
-				addressFragments.add(address.getAddressLine(i));
+				addressFragments.append(address.getAddressLine(i)+"\n");
 			}
 
 			Log.i(TAG, getString(R.string.address_found));
-			deliverResultToReceiver(Constants.SUCCESS_RESULT,
-					TextUtils.join(System.getProperty("line.separator"),
-							addressFragments));
+			//TextUtils.join(System.getProperty("line.separator")
+			deliverResultToReceiver(Constants.SUCCESS_RESULT,addressFragments.toString(),address.getLocality(),address.getCountryCode(),address.getPostalCode());
 		}
 	}
 
-	private void deliverResultToReceiver(int resultCode, String message) {
+	private void deliverResultToReceiver(int resultCode, String fullAddress, String cityName, String countryCode, String zipCode) {
 		Bundle bundle = new Bundle();
-		bundle.putString(Constants.RESULT_DATA_KEY, message);
+		bundle.putString(Constants.RESULT_DATA_FULLADDRESS, fullAddress);
+		bundle.putString(Constants.RESULT_DATA_CITYNAME, cityName);
+		bundle.putString(Constants.RESULT_DATA_COUNTRY_CODE, countryCode);
+		bundle.putString(Constants.RESULT_DATA_ZIP_CODE, zipCode);
 		mReceiver.send(resultCode, bundle);
 	}
 
