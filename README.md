@@ -14,6 +14,7 @@ Examples: see www.le-space.de or www.irinasenko.com (scroll down to the bottom o
 ![gps2ftp badge](https://github.com/Le-Space/gps2ftp/raw/master/marketing/ic_launcher_round/web_hi_res_512_small.png)
 
 Todo:
+- (help) add help (general usage mobile device, wear device, setup)
 - (mobile) add basic authentication to HTTP publish
 - (mobile) add bearer tokeen to HTTP publish
 - (wear) open settings dialog on mobile when connection to ftp server failed.
@@ -60,11 +61,7 @@ Todo:
     - BrowserStack
     - Genymotion
 
-
 Bugs:
-- first time installation does not show current position 
-- first time installation shows only strange error and does not switch to config
-- first time installation does not show help
 
 
 Nice2Haves:
@@ -76,9 +73,12 @@ Nice2Haves:
     - https://dev.twitter.com/rest/reference/post/account/update_profile
 - update facebook location
     - https://developers.facebook.com/docs/graph-api/reference/location/
+- update geo position meta tags on your website
+    - http://www.geo-tag.de/generator/de.html
 - update github location
+    - https://developer.github.com/v3/users/
 - check location in a certain frequence (every x minutes/hours)
-- handle REST-URL
+
 - handle multiple websites 
     
 Information
