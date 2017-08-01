@@ -46,6 +46,9 @@ public class FetchAddressIntentService extends IntentService {
 		// Get the location passed to this service through an extra.
 		Location location = intent.getParcelableExtra(Constants.LOCATION_DATA_EXTRA);
 
+		if(!Geocoder.isPresent()){
+			return;
+		}
 		List<Address> addresses = null;
 
 		try {

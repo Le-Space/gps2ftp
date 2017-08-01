@@ -103,6 +103,9 @@ public class HTTPUpdateTask extends AsyncTask<String, Integer, String> {
 		String firstPart = SHTTPHOST;
 		String secondPart = SHTTURL;
 
+		if(!firstPart.toLowerCase().startsWith("http:") || !firstPart.toLowerCase().startsWith("https:"))
+			firstPart = "https://"+firstPart;
+
 		if(firstPart.endsWith("/"))
 			firstPart = firstPart.substring(0,firstPart.length()-1);
 

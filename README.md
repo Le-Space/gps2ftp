@@ -14,7 +14,6 @@ Examples: see www.le-space.de or www.irinasenko.com (scroll down to the bottom o
 ![gps2ftp badge](https://github.com/Le-Space/gps2ftp/raw/master/marketing/ic_launcher_round/web_hi_res_512_small.png)
 
 Todo:
-- (help) add help (general usage mobile device, wear device, setup)
 - (mobile) add basic authentication to HTTP publish
 - (mobile) add bearer tokeen to HTTP publish
 - (wear) open settings dialog on mobile when connection to ftp server failed.
@@ -24,7 +23,7 @@ Todo:
 - (wear) get location when offline
     - https://developer.android.com/training/location/receive-location-updates.html
     - https://developer.android.com/training/articles/wear-location-detection.html
-    
+- (help) add help (general usage mobile device, wear device, setup)    
 - (wear) sync config (ftp, lastPosition, lastAddress) with wear device 
     - https://stackoverflow.com/questions/25196033/android-wear-data-items
 - (wear) communicate with phone (get configuration from phone) 
@@ -54,6 +53,8 @@ Todo:
 - evaluate code climate / add badge to github https://codeclimate.com/
 - evaluate cdnjs (for a map/webrtc widget?!) https://github.com/cdnjs/cdnjs
 - write tests
+   - Android Testing http://www.vogella.com/tutorials/AndroidTesting/article.html
+   - Android Testing Espresso http://www.vogella.com/tutorials/AndroidTestingEspresso/article.html#espresso_exercisesimple
    - Espresso http://peirr.com/writing-android-tests-with-espresso-test-recorder/
    - Evaluate Coveralls.io / add badge to github https://coveralls.io/
 - add help video and help text to app (howto use this app)

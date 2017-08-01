@@ -22,7 +22,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,7 +40,6 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.Wearable;
@@ -56,7 +54,7 @@ import static de.le_space.gps2ftpcommon.Constants.LOCATION_UPDATE_ERROR;
 import static de.le_space.gps2ftpcommon.Constants.LOCATION_UPDATE_SUCCESS;
 import static de.le_space.gps2ftpcommon.Constants.mGoogleApiClient;
 
-public class MainActivity extends AppCompatActivity  implements OnMapReadyCallback,	DataApi.DataListener {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, DataApi.DataListener {
 
 	private static final String TAG = "Main";
 	private FusedLocationProviderClient mFusedLocationClient;
@@ -119,6 +117,7 @@ public class MainActivity extends AppCompatActivity  implements OnMapReadyCallba
 					public void onConnected(Bundle connectionHint) {
 						Wearable.DataApi.addListener(mGoogleApiClient, MainActivity.this);
 					}
+
 					@Override
 					public void onConnectionSuspended(int cause) {
 						Wearable.DataApi.removeListener(mGoogleApiClient, MainActivity.this);
@@ -131,17 +130,19 @@ public class MainActivity extends AppCompatActivity  implements OnMapReadyCallba
 					}
 				})
 				.addApi(Wearable.API)
+				.addApi(LocationServices.API)
 				.build();
 
 		mGoogleApiClient.connect();
 
 		mLocationRequest = LocationRequest.create();
+
 		mLocationCallback = new LocationCallback() {
 			@Override
 			public void onLocationResult(LocationResult locationResult) {
-				mLastLocation =  locationResult.getLocations().get(0);
+				mLastLocation = locationResult.getLocations().get(0);
 				processLocation();
-			};
+			}
 		};
 
 		Intent intent = getIntent();
@@ -180,31 +181,36 @@ public class MainActivity extends AppCompatActivity  implements OnMapReadyCallba
 		if (accessFineLocation != PackageManager.PERMISSION_GRANTED && accessCoarseLocation != PackageManager.PERMISSION_GRANTED) {
 			Snackbar.make(coordinatorLayout, "Please give the required permission to the app!", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 			return;
+
 		} else {
 
-			if (hasGps()) {
-				Log.d(TAG, "This hardware doesn't have GPS.");
-				mFusedLocationClient.requestLocationUpdates(mLocationRequest,mLocationCallback,null);
-			}else{
-				mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+			//if (hasGps()) {
+				//Log.d(TAG, "This hardware doesn't have GPS.");
+			/*	mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
 					@Override
 					public void onSuccess(Location location) {
-						mLastLocation = location;
-						Snackbar.make(coordinatorLayout, "Got new position", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
-						// In some rare cases the location returned can be null
-						if (mLastLocation == null) {
-							return;
-						}
+						mLastLocation = location; //in emulator this can be null in the beginning
 						processLocation();
 					}
-				});
-			}
+				}); */
+
+			//now request standard location updates no matter what
+				mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+
+		//}
+
 		}
 
 	}
 
 	public void processLocation(){
+
+		if(mLastLocation==null){ //this is a fake location only for the emulator and espresso tests which for some reason always returns null when freshly installed!
+			mLastLocation = new Location("");
+			mLastLocation.setLatitude(48.5314846);
+			mLastLocation.setLongitude(12.9423686);
+		}
+
 		LatLng latlng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 		googleMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
 

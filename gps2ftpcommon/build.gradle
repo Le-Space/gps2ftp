@@ -30,9 +30,9 @@ dependencies {
     compile 'com.jcraft:jsch:0.1.54'
     compile group: 'cz.msebera.android' , name: 'httpclient', version: '4.4.1.1'
 
-    compile 'com.google.android.gms:play-services-location:11.0.1'
-    compile 'com.google.android.gms:play-services-maps:11.0.1'
-    compile 'com.google.android.gms:play-services-wearable:11.0.1'
+    compile 'com.google.android.gms:play-services-location:11.0.4'
+    compile 'com.google.android.gms:play-services-maps:11.0.4'
+    compile 'com.google.android.gms:play-services-wearable:11.0.4'
 
     testCompile 'junit:junit:4.12'
 }

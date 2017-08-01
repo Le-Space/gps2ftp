@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "863926616403",
+    "firebase_url": "https://gps2ftp-1497861321054.firebaseio.com",
+    "project_id": "gps2ftp-1497861321054",
+    "storage_bucket": "gps2ftp-1497861321054.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:863926616403:android:29736b494d0819a9",
+        "android_client_info": {
+          "package_name": "de.le_space.gps2ftp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "863926616403-v3j03063lrkr0fvrr8u5mnfjcst4ghhi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDO3woQFUNXxBJni4btOJJXCwKeY32f-c8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
