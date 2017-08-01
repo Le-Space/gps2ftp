@@ -3,7 +3,6 @@ package de.le_space.gps2ftpcommon;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -103,7 +102,7 @@ public class HTTPUpdateTask extends AsyncTask<String, Integer, String> {
 		String firstPart = SHTTPHOST;
 		String secondPart = SHTTURL;
 
-		if(!firstPart.toLowerCase().startsWith("http:") || !firstPart.toLowerCase().startsWith("https:"))
+		if(!firstPart.toLowerCase().startsWith("http:") && !firstPart.toLowerCase().startsWith("https:"))
 			firstPart = "https://"+firstPart;
 
 		if(firstPart.endsWith("/"))
@@ -124,7 +123,7 @@ public class HTTPUpdateTask extends AsyncTask<String, Integer, String> {
 	@Override
 	protected void onProgressUpdate(Integer... values) {
 		super.onProgressUpdate(values);
-		Toast.makeText(activity,"Please check HTTP-Config:"+ex.getMessage(), Toast.LENGTH_LONG).show();
+		//Toast.makeText(activity,"Please check HTTP-Config:", Toast.LENGTH_LONG).show();
 	}
 
 	@Override

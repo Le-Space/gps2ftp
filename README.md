@@ -15,6 +15,7 @@ Examples: see www.le-space.de or www.irinasenko.com (scroll down to the bottom o
 
 Todo:
 - (mobile) add basic authentication to HTTP publish
+    - https://github.com/stubailo/meteor-rest/blob/master/packages/rest-accounts-password/README.md
 - (mobile) add bearer tokeen to HTTP publish
 - (wear) open settings dialog on mobile when connection to ftp server failed.
     - https://gist.github.com/gabrielemariotti/117b05aad4db251f7534

@@ -165,7 +165,7 @@ public class MapsActivity extends Activity implements OnMapReadyCallback,
 
 
 			if (hasGps()) {
-				Toast.makeText(MapsActivity.this, "this device has gps", Toast.LENGTH_LONG).show();
+				//Toast.makeText(MapsActivity.this, "this device has gps", Toast.LENGTH_LONG).show();
 				mFusedLocationClient.flushLocations();
 
 				mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null /* Looper */);

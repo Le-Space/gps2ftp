@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "de.le_space.gps2ftp"
         minSdkVersion 25
         targetSdkVersion 26
-        versionCode 6
-        versionName "0.6"
+        versionCode 7
+        versionName "0.7"
     }
     buildTypes {
         release {
