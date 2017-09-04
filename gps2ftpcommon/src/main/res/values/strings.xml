@@ -9,4 +9,6 @@
     <string name="location_published_error">Location could not be published</string>
     <string name="publish_ftp">Publish position now?</string>
     <string name="googleMapsApiKey">AIzaSyBgMqhvL2oyciR4w2m1CVV2Z5OWEVSnhRI</string>
+    <string name="location_found">New Location Found</string>
+    <string name="location_not_found">Location not found</string>
 </resources>

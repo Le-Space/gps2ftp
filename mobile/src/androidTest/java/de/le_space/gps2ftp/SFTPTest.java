@@ -34,7 +34,7 @@ public class SFTPTest {
 	String sftpPassword = "jekaterinburg";
 
 	@Rule
-	public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+	public ActivityTestRule<MobileMainActivity> mActivityTestRule = new ActivityTestRule<>(MobileMainActivity.class);
 	@Before
 	public void grantPermission() {
 

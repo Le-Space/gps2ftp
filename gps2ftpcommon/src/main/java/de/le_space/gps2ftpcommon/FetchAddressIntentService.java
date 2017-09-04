@@ -49,8 +49,8 @@ public class FetchAddressIntentService extends IntentService {
 		if(!Geocoder.isPresent()){
 			return;
 		}
-		List<Address> addresses = null;
 
+		List<Address> addresses = null;
 		try {
 				addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),
 					// In this sample, get just a single address.
@@ -79,7 +79,6 @@ public class FetchAddressIntentService extends IntentService {
 			}
 
 			deliverResultToReceiver(Constants.FAILURE_RESULT,errorMessage, null, null, null);
-
 		} else {
 
 			Address address = addresses.get(0);

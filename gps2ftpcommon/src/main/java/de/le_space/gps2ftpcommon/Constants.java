@@ -31,8 +31,10 @@ public final class Constants {
 	public static final String RESULT_DATA_ZIP_CODE = PACKAGE_NAME + ".RESULT_DATA_ZIP_CODE";;
 	public static final String LOCATION_DATA_EXTRA = PACKAGE_NAME +".LOCATION_DATA_EXTRA";
 
-	public static final String LOCATION_UPDATE_SUCCESS = " de.le_space.gps2ftp.LOCATION_UPDATE_SUCCESS";
-	public static final String LOCATION_UPDATE_ERROR = " de.le_space.gps2ftp.LOCATION_UPDATE_ERROR";
+	public static final String LOCATION_PUBLISH_SUCCESS = " de.le_space.gps2ftp.LOCATION_PUBLISH_SUCCESS";
+	public static final String LOCATION_PUBLISH_ERROR = " de.le_space.gps2ftp.LOCATION_PUBLISH_ERROR";
+	public static final String LOCATION_FOUND = " de.le_space.gps2ftp.LOCATION_FOUND";
+	public static final String LOCATION_NOT_FOUND = " de.le_space.gps2ftp.LOCATION_NOT_FOUND";
 
 	// Write the prefix to the SharedPreferences object for this widget
 	public static void saveTitlePref(Context context, int appWidgetId, String element, String text) {

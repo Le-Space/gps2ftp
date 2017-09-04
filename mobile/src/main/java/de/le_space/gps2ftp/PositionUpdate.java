@@ -29,7 +29,7 @@ public class PositionUpdate extends AppWidgetProvider {
 		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.position_update);
 		views.setTextViewText(R.id.updatePositon, widgetLastAddress);
 
-		Intent intentUpdate = new Intent(context, MainActivity.class);
+		Intent intentUpdate = new Intent(context, MobileMainActivity.class);
 		intentUpdate.setAction(UPDATE_POSITION_ACTION);
 		intentUpdate.putExtra("direct","true");
 		intentUpdate.putExtra("appWidgetId",appWidgetId);

@@ -30,7 +30,7 @@ import static org.hamcrest.Matchers.allOf;
 public class HTTPPublishTest {
 
 	@Rule
-	public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+	public ActivityTestRule<MobileMainActivity> mActivityTestRule = new ActivityTestRule<>(MobileMainActivity.class);
 
 	@Before
 	public void grantPermission() {

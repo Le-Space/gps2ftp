@@ -1,9 +1,9 @@
 ![Travis badge](https://api.travis-ci.org/Le-Space/gps2ftp.svg?branch=master)
 
 GPS2FTP
--------
-An app for Android devices which updates the current gps position to a defined sftp server.
-So far only useful in order when you want to update your personal website with your current gps location. 
+=======
+An app for Android mobile devices and Android wear devices which update the current gps position to a defined sftp server or http(s)-REST server.
+Especially usefull for people who are constantly working on different places eg. digital nomads but maybe even classic professions like artists and others.
 
 As an example or first use case we forked the free Bootstrap template of David Miller (https://twitter.com/davidmillerskt)
 https://github.com/Le-Space/startbootstrap-grayscale 
@@ -13,33 +13,31 @@ Examples: see www.le-space.de or www.irinasenko.com (scroll down to the bottom o
 
 ![gps2ftp badge](https://github.com/Le-Space/gps2ftp/raw/master/marketing/ic_launcher_round/web_hi_res_512_small.png)
 
+
+Howto:
+------
+1. Install the app on your mobile device (and your wear device) by cloning this repository into Android Studio OR install it directly in [Google Play](https://play.google.com/store/apps/details?id=de.le_space.gps2ftp)
+2. Setup a website with a google map, configure a ftp account (or alternativly use REST)
+3. Configure FTP-Account or REST-Account in the gps2ftp app settings
+
+
 Todo:
-- (mobile) add basic authentication to HTTP publish
-    - https://github.com/stubailo/meteor-rest/blob/master/packages/rest-accounts-password/README.md
-- (mobile) add bearer tokeen to HTTP publish
+-----
+- (wear) create notification when upload was (not) successful / open expanded notification on mobile for configuration
+   - https://developer.android.com/training/wearables/notifications/creating.html
 - (wear) open settings dialog on mobile when connection to ftp server failed.
     - https://gist.github.com/gabrielemariotti/117b05aad4db251f7534
-- (wear/app) maps demo add my location icon / gps 
+- (wear/app) add my location icon / gps 
     - https://github.com/googlemaps/android-maps-utils/tree/master/demo
 - (wear) get location when offline
     - https://developer.android.com/training/location/receive-location-updates.html
     - https://developer.android.com/training/articles/wear-location-detection.html
 - (help) add help (general usage mobile device, wear device, setup)    
-- (wear) sync config (ftp, lastPosition, lastAddress) with wear device 
-    - https://stackoverflow.com/questions/25196033/android-wear-data-items
 - (wear) communicate with phone (get configuration from phone) 
     - https://developer.android.com/training/wearables/data-layer/events.html
 - (wear) support wear devices without gps
 - (wear) support wear devices without wifi
 - (wear) support wear devices without instant to network (get position and wait for network?!)
-
-- (wear) check perissions 
-    - https://developer.android.com/training/articles/wear-permissions.html
-    - https://developer.android.com/training/permissions/requesting.html#explain
-    
-- (wear) create notification when upload was (not) successful / open expanded notification on mobile for configuration
-   - https://developer.android.com/training/wearables/notifications/creating.html
-
 - (wear) double touch 2 update position - disable double touch 4 zoom
    - (gesture library for android) https://github.com/nisrulz/Sensey
    - https://github.com/codepath/android_guides/wiki/Gestures-and-Touch-Events
@@ -89,6 +87,19 @@ Information
         ``adb connect 127.0.0.1:4444``    
     
 Done:
+04.09.2017 
+- 10h restructured and improved shared codebase between mobile and wear device
+- 2h  enabled keys on wear for location udpate and server publish
+01.08.2017
+- 6h (mobile) add basic authentication to HTTP publish
+    - https://github.com/stubailo/meteor-rest/blob/master/packages/rest-accounts-password/README.md
+- 6h (mobile) add bearer token to HTTP publish
+28.07.2017
+- (wear) check perissions 
+    - https://developer.android.com/training/articles/wear-permissions.html
+    - https://developer.android.com/training/permissions/requesting.html#explain
+- 12h (wear) sync config (ftp, lastPosition, lastAddress) with wear device 
+      - https://stackoverflow.com/questions/25196033/android-wear-data-items
 27.07.2017
 - 2h (mobile) add HTTP-URL for REST-UPDATE
 25.07.2017 
