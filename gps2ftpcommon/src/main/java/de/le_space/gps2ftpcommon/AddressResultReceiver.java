@@ -68,6 +68,9 @@ public class AddressResultReceiver extends ResultReceiver {
 			String mAddressOutputLastZipCode = resultData.getString(Constants.RESULT_DATA_ZIP_CODE);
 			String mAddressOutputLastCountryCode = resultData.getString(Constants.RESULT_DATA_COUNTRY_CODE);
 
+			//always save position -  or not an address could be found.
+			saveTitlePref(activity.getApplicationContext(),1, "lastPosition", lastPositionJsonObject.toString());
+
 			// Show a toast message if an address was found.
 			if (resultCode == Constants.SUCCESS_RESULT) {
 				//save our position to the device
@@ -76,7 +79,6 @@ public class AddressResultReceiver extends ResultReceiver {
 				lastPositionJsonObject.put("lastZipCode", mAddressOutputLastZipCode);
 				lastPositionJsonObject.put("lastCountryCode", mAddressOutputLastCountryCode);
 
-				saveTitlePref(activity.getApplicationContext(),1, "lastPosition", lastPositionJsonObject.toString());
 				saveTitlePref(activity.getApplicationContext(),1, "lastAddress", mAddressOutputLastAddress);
 				saveTitlePref(activity.getApplicationContext(),1, "lastCity", mAddressOutputLastCityName);
 				saveTitlePref(activity.getApplicationContext(),1, "lastZipCode", mAddressOutputLastZipCode);

@@ -254,8 +254,21 @@ public class WearMainActivity extends Activity implements
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if(intent.getAction().equals(LOCATION_FOUND)) {
-
 				String lastAddress = loadTitlePref(context,1,"lastAddress");
+				Toast.makeText(WearMainActivity.this,lastAddress,Toast.LENGTH_LONG).show();
+			}
+			if(intent.getAction().equals(LOCATION_NOT_FOUND)) {
+				Toast.makeText(WearMainActivity.this,R.string.location_not_found,Toast.LENGTH_LONG).show();
+			}
+			if(intent.getAction().equals(LOCATION_PUBLISH_SUCCESS)) {
+				Toast.makeText(WearMainActivity.this,R.string.location_published_successfully,Toast.LENGTH_LONG).show();
+			}
+			if(intent.getAction().equals(LOCATION_PUBLISH_ERROR)) {
+				Toast.makeText(WearMainActivity.this,R.string.location_published_error,Toast.LENGTH_LONG).show();
+			}
+
+			//always update
+			if(intent.getAction().equals(LOCATION_FOUND) || intent.getAction().equals(LOCATION_NOT_FOUND)){
 				JSONObject lastPosition = null;
 				try {
 					lastPosition = new JSONObject(
@@ -265,55 +278,12 @@ public class WearMainActivity extends Activity implements
 					mLastLocation = new Location("");
 					mLastLocation.setLatitude(lastPosition.getDouble("lat"));//your coords of course
 					mLastLocation.setLongitude(lastPosition.getDouble("lng"));
+					googleMap.animateCamera( CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude())));
 					googleMap.animateCamera( CameraUpdateFactory.zoomTo(new Float(lastPosition.getInt("zoom"))));
 
 				} catch (JSONException e) {
 					Log.e(TAG, e.getMessage());
 				}//R.string.location_found
-				Toast.makeText(WearMainActivity.this,lastAddress,Toast.LENGTH_LONG).show();
-
-			/*	int notificationId = 001;
-// Build intent for notification content
-				Intent viewIntent = new Intent(thisActivity,WearMainActivity.class);
-				//viewIntent.putExtra(EXTRA_EVENT_ID, eventId);
-				PendingIntent viewPendingIntent =
-						PendingIntent.getActivity(thisActivity, 0, viewIntent, 0);
-
-				NotificationCompat.Builder notificationBuilder =
-						new NotificationCompat.Builder(thisActivity)
-								.setSmallIcon(R.mipmap.ic_launcher)
-								.setContentTitle("test")
-								.setContentText("text")
-								.setContentIntent(viewPendingIntent);
-
-				// Get an instance of the NotificationManager service
-				NotificationManagerCompat notificationManager =
-						NotificationManagerCompat.from(thisActivity);
-
-// Issue the notification with notification manager.
-				notificationManager.notify(notificationId, notificationBuilder.build());*/
-
-				/*	Intent confirmationIntent = new Intent(getApplicationContext(), ConfirmationActivity.class);
-				confirmationIntent.putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE,
-						ConfirmationActivity.SUCCESS_ANIMATION);
-				confirmationIntent.putExtra(ConfirmationActivity.EXTRA_MESSAGE,
-						getString(R.string.location_found));
-				startActivity(confirmationIntent);*/
-			}
-			if(intent.getAction().equals(LOCATION_NOT_FOUND)) {
-				Toast.makeText(WearMainActivity.this,R.string.location_not_found,Toast.LENGTH_LONG).show();
-				/*Intent confirmationIntent = new Intent(getApplicationContext(), ConfirmationActivity.class);
-				confirmationIntent.putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE,
-						ConfirmationActivity.SUCCESS_ANIMATION);
-				confirmationIntent.putExtra(ConfirmationActivity.EXTRA_MESSAGE,
-						getString(R.string.location_not_found));
-				startActivity(confirmationIntent);*/
-			}
-			if(intent.getAction().equals(LOCATION_PUBLISH_SUCCESS)) {
-				Toast.makeText(WearMainActivity.this,R.string.location_published_successfully,Toast.LENGTH_LONG).show();
-			}
-			if(intent.getAction().equals(LOCATION_PUBLISH_ERROR)) {
-				Toast.makeText(WearMainActivity.this,R.string.location_published_error,Toast.LENGTH_LONG).show();
 			}
 		}
 	};
