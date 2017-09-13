@@ -1,6 +1,7 @@
 package de.le_space.gps2ftp;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -38,6 +39,8 @@ import com.google.android.gms.wearable.Wearable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 import de.le_space.gps2ftpcommon.DataLayerListener;
 import de.le_space.gps2ftpcommon.LocationUpdates;
@@ -261,7 +264,7 @@ public class MobileMainActivity extends AppCompatActivity implements
 				//R.string.location_found+" ";
 				Toast.makeText(MobileMainActivity.this,lastAddress,Toast.LENGTH_LONG).show();
 				//
-				Utils.publishPosition(thisActivity);
+				Utils.publishPosition(thisActivity,false);
 			}
 
 			if(intent.getAction().equals(LOCATION_NOT_FOUND)) {
@@ -280,7 +283,15 @@ public class MobileMainActivity extends AppCompatActivity implements
 				Toast.makeText(MobileMainActivity.this,R.string.location_published_successfully,Toast.LENGTH_LONG).show();
 			}
 			if(intent.getAction().equals(LOCATION_PUBLISH_ERROR)) {
-				startSettingsActivity();
+				Toast.makeText(MobileMainActivity.this,R.string.location_published_error+" "+intent.getStringExtra("error"),Toast.LENGTH_LONG).show();
+				ActivityManager am = (ActivityManager)context.getSystemService(ACTIVITY_SERVICE);
+
+				List< ActivityManager.RunningTaskInfo > taskInfo = am.getRunningTasks(1);
+				String currentActivity = taskInfo.get(0).topActivity.getClassName();
+				Log.i( "CURRENT Activity ",  currentActivity);
+
+				if(!"de.le_space.gps2ftp.PositionUpdateConfigureActivity".equals(currentActivity))
+					startSettingsActivity();
 			}
 		}
 	};

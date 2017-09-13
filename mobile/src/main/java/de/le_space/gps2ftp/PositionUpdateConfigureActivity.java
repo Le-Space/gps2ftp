@@ -32,8 +32,66 @@ public class PositionUpdateConfigureActivity extends Activity {
 	EditText mAppWidgetRemoteDirectory;
 	EditText mAppWidgetGoogleMapsApiKey;
 	int mAppWidgetId = 1;
-	View.OnClickListener mOnClickListenerSave = new View.OnClickListener() {
+	Activity thisActivity;
+
+	public PositionUpdateConfigureActivity() {
+		super();
+	}
+
+	@Override
+	public void onCreate(Bundle icicle) {
+		super.onCreate(icicle);
+		setResult(RESULT_CANCELED);
+		thisActivity = this;
+		setContentView(R.layout.position_update_configure);
+		mAppWidgetProtocol = findViewById(R.id.appwidget_protocol);
+		mAppWidgetHost = findViewById(R.id.appwidget_host);
+		mAppWidgetUsername = findViewById(R.id.appwidget_username);
+		mAppWidgetPassword = findViewById(R.id.appwidget_password);
+		mAppWidgetUsername = findViewById(R.id.appwidget_username);
+		mAppWidgetRemoteDirectory = findViewById(R.id.appwidget_remoteDirectory);
+		mAppWidgetGoogleMapsApiKey = findViewById(R.id.appwidget_googleMapsApiKey);
+
+		findViewById(R.id.connectionTest_button).setOnClickListener(mOnClickListenerConnecdtionTest);
+		findViewById(R.id.save_button).setOnClickListener(mOnClickListenerSave);
+
+		String protocol = loadTitlePref(PositionUpdateConfigureActivity.this, mAppWidgetId, "protocol");
+		switch (protocol){
+			case "HTTP(S)":
+				mAppWidgetProtocol.check(mAppWidgetProtocol.getChildAt(0).getId());
+				break;
+			case "SFTP":
+				mAppWidgetProtocol.check(mAppWidgetProtocol.getChildAt(1).getId());
+				break;
+		}
+
+		mAppWidgetHost.setText(loadTitlePref(PositionUpdateConfigureActivity.this, mAppWidgetId, "host"));
+		mAppWidgetUsername.setText(loadTitlePref(PositionUpdateConfigureActivity.this, mAppWidgetId, "username"));
+		mAppWidgetPassword.setText(loadTitlePref(PositionUpdateConfigureActivity.this, mAppWidgetId ,"password"));
+		mAppWidgetRemoteDirectory.setText(loadTitlePref(PositionUpdateConfigureActivity.this, mAppWidgetId, "remoteDirectory"));
+		mAppWidgetGoogleMapsApiKey.setText(loadTitlePref(PositionUpdateConfigureActivity.this, mAppWidgetId, "googleMapsApiKey"));
+	}
+
+	View.OnClickListener mOnClickListenerConnecdtionTest = new View.OnClickListener() {
+
 		public void onClick(View v) {
+
+			mAppWidgetProtocol =  findViewById(R.id.appwidget_protocol);
+
+			Utils.TEST_PROTOCOL = ((RadioButton) findViewById(mAppWidgetProtocol.getCheckedRadioButtonId())).getText().toString();
+			Utils.TEST_USER = mAppWidgetUsername.getText().toString();
+			Utils.TEST_HOST = mAppWidgetHost.getText().toString();
+			Utils.TEST_PASS = mAppWidgetPassword.getText().toString();
+			Utils.TEST_URL = mAppWidgetRemoteDirectory.getText().toString();
+
+			Utils.publishPosition(thisActivity,true);
+
+		}
+	};
+
+	View.OnClickListener mOnClickListenerSave = new View.OnClickListener() {
+
+			public void onClick(View v) {
 
 			final Context context = PositionUpdateConfigureActivity.this;
 
@@ -67,50 +125,12 @@ public class PositionUpdateConfigureActivity extends Activity {
 			map.putString("googleMapsApiKey", widgetGoogleMapsApiKey);
 			Utils.sendConfigItems(mGoogleApiClient,putRequest);
 
-			// Make sure we pass back the original appWidgetId
 			Intent resultValue = new Intent();
 			resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
 
 			setResult(RESULT_OK, resultValue);
 			finish();
-		}
-	};
-
-	public PositionUpdateConfigureActivity() {
-		super();
-	}
-
-	@Override
-	public void onCreate(Bundle icicle) {
-		super.onCreate(icicle);
-		setResult(RESULT_CANCELED);
-
-		setContentView(R.layout.position_update_configure);
-		mAppWidgetProtocol = findViewById(R.id.appwidget_protocol);
-		mAppWidgetHost = findViewById(R.id.appwidget_host);
-		mAppWidgetUsername = findViewById(R.id.appwidget_username);
-		mAppWidgetPassword = findViewById(R.id.appwidget_password);
-		mAppWidgetUsername = findViewById(R.id.appwidget_username);
-		mAppWidgetRemoteDirectory = findViewById(R.id.appwidget_remoteDirectory);
-		mAppWidgetGoogleMapsApiKey = findViewById(R.id.appwidget_googleMapsApiKey);
-
-		findViewById(R.id.save_button).setOnClickListener(mOnClickListenerSave);
-
-		String protocol = loadTitlePref(PositionUpdateConfigureActivity.this, mAppWidgetId, "protocol");
-		switch (protocol){
-			case "HTTP(S)":
-				mAppWidgetProtocol.check(mAppWidgetProtocol.getChildAt(0).getId());
-				break;
-			case "SFTP":
-				mAppWidgetProtocol.check(mAppWidgetProtocol.getChildAt(1).getId());
-				break;
-		}
-
-		mAppWidgetHost.setText(loadTitlePref(PositionUpdateConfigureActivity.this, mAppWidgetId, "host"));
-		mAppWidgetUsername.setText(loadTitlePref(PositionUpdateConfigureActivity.this, mAppWidgetId, "username"));
-		mAppWidgetPassword.setText(loadTitlePref(PositionUpdateConfigureActivity.this, mAppWidgetId ,"password"));
-		mAppWidgetRemoteDirectory.setText(loadTitlePref(PositionUpdateConfigureActivity.this, mAppWidgetId, "remoteDirectory"));
-		mAppWidgetGoogleMapsApiKey.setText(loadTitlePref(PositionUpdateConfigureActivity.this, mAppWidgetId, "googleMapsApiKey"));
-	}
+			}
+		};
 }
 

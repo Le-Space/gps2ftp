@@ -26,13 +26,13 @@ import javax.net.SocketFactory;
  */
 public class FTPUpdateTask extends AsyncTask<String, Integer, String> {
 
-	private static final String TAG = "Main";
-
-	public static String SFTPHOST = "";
+	private static final String TAG = "FTPUpdateTask";
+	private boolean test;
+	public static String HOST = "";
 	public static int SFTPPORT = 22;
-	public static String SFTPUSER = "";
-	public static String SFTPPASS = "";
-	public static String SFTPWORKINGDIR = "";
+	public static String USER = "";
+	public static String PASS = "";
+	public static String WORKINGDIR = "";
 	private SocketFactory socketFactory;
 	public Activity activity;
 
@@ -63,6 +63,13 @@ public class FTPUpdateTask extends AsyncTask<String, Integer, String> {
 
 	private FTPUpdateTask.PostFTPTaskListener<String> postTaskListener;
 
+	public boolean isTest() {
+		return test;
+	}
+
+	public void setTest(boolean test) {
+		this.test = test;
+	}
 	public void setSocketFactory(SocketFactory socketFactory) {
 		this.socketFactory = socketFactory;
 	}
@@ -89,11 +96,11 @@ public class FTPUpdateTask extends AsyncTask<String, Integer, String> {
 			JSch jsch = new JSch();
 
 			//new JSch();
-			session = jsch.getSession(SFTPUSER, SFTPHOST, SFTPPORT);
+			session = jsch.getSession(USER, HOST, SFTPPORT);
 
 			if(socketFactory!=null) session.setSocketFactory(new MySocketFactory(socketFactory));
 
-			session.setPassword(SFTPPASS);
+			session.setPassword(PASS);
 			java.util.Properties config = new java.util.Properties();
 			config.put("StrictHostKeyChecking", "no");
 			config.put("PreferredAuthentications", "password");
@@ -102,12 +109,16 @@ public class FTPUpdateTask extends AsyncTask<String, Integer, String> {
 			channel = session.openChannel("sftp");
 			channel.connect();
 			channelSftp = (ChannelSftp) channel;
-			channelSftp.cd(SFTPWORKINGDIR);
+			channelSftp.cd(WORKINGDIR);
 
 			InputStream stream = new ByteArrayInputStream(jsonContent[0].getBytes(StandardCharsets.UTF_8));
-			channelSftp.put(stream, "latlng.json");
+			if(isTest()){
+				channelSftp.put(stream, "test-connection.json");
+			}
+			else channelSftp.put(stream, "latlng.json");
+
 			stream.close();
-			String successString = "finished ftp transfer to:" + SFTPHOST;
+			String successString = "finished ftp transfer to:" + HOST;
 			Log.d(TAG, successString);
 			postTaskListener.onSuccess(successString);
 		} catch (Exception ex) {
@@ -115,6 +126,7 @@ public class FTPUpdateTask extends AsyncTask<String, Integer, String> {
 			publishProgress(0);
 			Log.e(TAG, ex.getMessage());
 			ex.printStackTrace();
+			postTaskListener.onError(ex.getMessage());
 		} finally {
 			if(channel!=null && channel.isConnected())channel.disconnect();
 			if(session!=null && session.isConnected())session.disconnect();
@@ -128,8 +140,6 @@ public class FTPUpdateTask extends AsyncTask<String, Integer, String> {
 		super.onProgressUpdate(values);
 		Toast.makeText(activity,"Please check FTP-Config:"+ex.getMessage(), Toast.LENGTH_LONG).show();
 		//Snackbar.make(view, "Please check FTP-Config:"+ex.getMessage(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-
-		postTaskListener.onError(ex.getMessage());
 	}
 
 	@Override

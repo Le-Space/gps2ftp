@@ -6,9 +6,9 @@ android {
     defaultConfig {
         applicationId "de.le_space.gps2ftp"
         minSdkVersion 25
-        targetSdkVersion 26
-        versionCode 7
-        versionName "0.7"
+        targetSdkVersion 22
+        versionCode 15
+        versionName "0.15"
     }
     buildTypes {
         release {
@@ -24,9 +24,14 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(":gps2ftpcommon")
-    compile "com.android.support:support-v4:25.0.+"
-    compile 'com.google.android.support:wearable:+'
-    provided 'com.google.android.wearable:wearable:2.0.3'
-    compile 'com.google.android.gms:play-services-wearable:11.0.1'
-    compile 'com.google.android.gms:play-services-maps:11.0.1'
+
+    compile 'com.google.android.support:wearable:1.2.0'
+    provided 'com.google.android.wearable:wearable:1.0.0'
+    compile 'com.google.android.gms:play-services-maps:11.2.0'
+    compile 'com.google.android.gms:play-services-wearable:11.2.0'
+    //compile "com.android.support:support-v4:25.0.+"
+    //compile 'com.google.android.support:wearable:+'
+    //provided 'com.google.android.wearable:wearable:2.0.4'
+
+    //compile 'com.google.android.gms:play-services-maps:11.2.0'
 }

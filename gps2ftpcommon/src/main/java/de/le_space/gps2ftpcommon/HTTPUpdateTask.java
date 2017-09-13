@@ -24,13 +24,13 @@ import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
  */
 public class HTTPUpdateTask extends AsyncTask<String, Integer, String> {
 
-	private static final String TAG = "Main";
-
-	public static String SHTTPHOST = "";
-	public static int SFTPPORT = 22;
-	public static String SHTTPUSER = "";
-	public static String SHTTPPASS = "";
-	public static String SHTTURL = "";
+	private static final String TAG = "HTTPUpdateTask";
+	private boolean test;
+	public static String HOST = "";
+	public static int PORT = 22;
+	public static String USER = "";
+	public static String PASS = "";
+	public static String HTTURL = "";
 	public Activity activity;
 
 	Exception ex;
@@ -52,7 +52,6 @@ public class HTTPUpdateTask extends AsyncTask<String, Integer, String> {
 	public boolean AUTHENTICATE(String url){
 
 		InputStream inputStream = null;
-
 		try {
 
 			// 1. create HttpClient
@@ -62,7 +61,7 @@ public class HTTPUpdateTask extends AsyncTask<String, Integer, String> {
 			HttpPost httpPost = new HttpPost(url);
 
 			// 5. set json to StringEntity
-			String jsonContent = "{\"email\": \""+this.SHTTPUSER+"\", \"password\": \"" + this.SHTTPPASS + "\"}";
+			String jsonContent = "{\"email\": \""+this.USER+"\", \"password\": \"" + this.PASS + "\"}";
 			StringEntity se = new StringEntity(jsonContent);
 
 			// 6. set httpPost Entity
@@ -95,58 +94,58 @@ public class HTTPUpdateTask extends AsyncTask<String, Integer, String> {
 		return true;
 	}
 
-	public String POST(String url, String jsonContent){
+	public String POST(String url, String jsonContent) throws IOException, JSONException {
 		InputStream inputStream = null;
 
-		try {
+		// 1. create HttpClient
+		HttpClient httpclient = new DefaultHttpClient();
 
-			// 1. create HttpClient
-			HttpClient httpclient = new DefaultHttpClient();
+		// 2. make POST request to the given URL
+		HttpPost httpPost = new HttpPost(url);
 
-			// 2. make POST request to the given URL
-			HttpPost httpPost = new HttpPost(url);
+		// 5. set json to StringEntity
+		StringEntity se = new StringEntity(jsonContent);
 
-			// 5. set json to StringEntity
-			StringEntity se = new StringEntity(jsonContent);
+		// 6. set httpPost Entity
+		httpPost.setEntity(se);
 
-			// 6. set httpPost Entity
-			httpPost.setEntity(se);
+		// 7. Set some headers to inform server about the type of the content
+		httpPost.setHeader("Accept", "application/json");
+		if(this.token!=null){
+			httpPost.setHeader("Authorization","Bearer "+token);
+		}
 
-			// 7. Set some headers to inform server about the type of the content
-			httpPost.setHeader("Accept", "application/json");
-			if(this.token!=null){
-				httpPost.setHeader("Authorization","Bearer "+token);
-			}
+		httpPost.setHeader("Content-type", "application/json");
 
-			httpPost.setHeader("Content-type", "application/json");
+		// 8. Execute POST request to the given URL
+		HttpResponse httpResponse = httpclient.execute(httpPost);
 
-			// 8. Execute POST request to the given URL
-			HttpResponse httpResponse = httpclient.execute(httpPost);
+		// 9. receive response as inputStream
+		inputStream = httpResponse.getEntity().getContent();
 
-			// 9. receive response as inputStream
-			inputStream = httpResponse.getEntity().getContent();
-
-			// 10. convert inputstream to string
-			if(inputStream != null){
-				return convertInputStreamToJSON(inputStream).toString();
-			}
-
-		} catch (Exception e) {
-			publishProgress(0);
-			//return false
-			Log.e(TAG, e.getLocalizedMessage());
+		// 10. convert inputstream to string
+		if(inputStream != null){
+			return convertInputStreamToString(inputStream).toString();
 		}
 
 		// 11. return result
 		return null;
 	}
 
+	public boolean isTest() {
+		return test;
+	}
+
+	public void setTest(boolean test) {
+		this.test = test;
+	}
+
 	protected String doInBackground(String... jsonContent) {
 
 		Log.d(TAG, "starting http transfer for position:" + jsonContent);
 
-		String firstPart = SHTTPHOST;
-		String secondPart = SHTTURL;
+		String firstPart = HOST;
+		String secondPart = HTTURL;
 
 		if(!firstPart.toLowerCase().startsWith("http:") && !firstPart.toLowerCase().startsWith("https:"))
 			firstPart = "https://"+firstPart;
@@ -162,11 +161,26 @@ public class HTTPUpdateTask extends AsyncTask<String, Integer, String> {
 		String authUrl = firstPart+"/users/login";
 
 		String url = firstPart+"/"+secondPart;
+
+		if(test)
+			url = firstPart+"/test.html";
+
 		String result = null;
+
 		if(AUTHENTICATE(authUrl)){
-			result =  POST(url,jsonContent[0]);
-			postTaskListener.onSuccess(result);
-		};
+			try {
+				result =  POST(url,jsonContent[0]);
+				postTaskListener.onSuccess(result);
+			} catch (IOException ex) {
+				publishProgress(0);
+				Log.e(TAG, ex.getLocalizedMessage());
+				postTaskListener.onError(ex.getMessage());
+			} catch (JSONException ex) {
+				publishProgress(0);
+				Log.e(TAG, ex.getLocalizedMessage());
+				postTaskListener.onError(ex.getMessage());
+			}
+		}
 
 		return result;
 	}
@@ -174,12 +188,25 @@ public class HTTPUpdateTask extends AsyncTask<String, Integer, String> {
 	@Override
 	protected void onProgressUpdate(Integer... values) {
 		super.onProgressUpdate(values);
-		//Toast.makeText(activity,"Please check HTTP-Config:", Toast.LENGTH_LONG).show();
 	}
 
 	@Override
 	protected void onPostExecute(String result) {
 		super.onPostExecute(result);
+	}
+
+	private static String convertInputStreamToString(InputStream inputStream) throws IOException, JSONException {
+
+		BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+		String line = "";
+		String result = "";
+
+		while((line = bufferedReader.readLine()) != null)
+			result += line;
+
+		inputStream.close();
+
+		return result;
 	}
 
 	private static JSONObject convertInputStreamToJSON(InputStream inputStream) throws IOException, JSONException {
@@ -195,7 +222,6 @@ public class HTTPUpdateTask extends AsyncTask<String, Integer, String> {
 		JSONObject json = new JSONObject(result);
 
 		return json;
-
 	}
 }
 

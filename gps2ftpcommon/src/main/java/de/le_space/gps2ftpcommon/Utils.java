@@ -25,46 +25,57 @@ import static de.le_space.gps2ftpcommon.Constants.loadTitlePref;
 
 public class Utils {
 
+
+	public static String TEST_PROTOCOL, TEST_HOST, TEST_USER, TEST_PASS, TEST_URL;
+
 	public static void sendConfigItems(GoogleApiClient mGoogleApiClient, final PutDataMapRequest putRequest) {
 		if(mGoogleApiClient==null)
 			return;
 		Wearable.DataApi.putDataItem(mGoogleApiClient,  putRequest.asPutDataRequest());
 	}
 
-	public static void publishPosition(final Activity activity){
+	/**
+	 * Publish Position
+	 * @param activity activity to send possible informations
+	 * @param test test connection
+	 */
+	public static void publishPosition(final Activity activity,final boolean test){
 
+		if(test) {
+			getNetwork(activity,test);
+		}else{
+			AlertDialog.Builder adb = new AlertDialog.Builder(activity);
+			//adb.setView(R.layout.activity_main);
+			adb.setTitle(R.string.publish_ftp);
+			adb.setIcon(android.R.drawable.ic_dialog_alert);
 
-		AlertDialog.Builder adb = new AlertDialog.Builder(activity);
-		//adb.setView(R.layout.activity_main);
-		adb.setTitle(R.string.publish_ftp);
-		adb.setIcon(android.R.drawable.ic_dialog_alert);
+			//final String finalJsonString = jsonStringPositionConfig;
+			//final JSONObject finalLastPositionJsonObject = lastPositionJsonObject;
+			adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
-		//final String finalJsonString = jsonStringPositionConfig;
-		//final JSONObject finalLastPositionJsonObject = lastPositionJsonObject;
-		adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
 
-			public void onClick(DialogInterface dialog, int which) {
+					getNetwork(activity, test);
 
-				getNetwork(activity);
+				} });
 
-			} });
+			adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
 
-		adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-
-				//finish();
-			} });
-		adb.show();
+					//finish();
+				} });
+			adb.show();
+		}
 
 	}
 
-	private static void getNetwork(final Activity activity){
+	private static void getNetwork(final Activity activity, final boolean test){
 
 		ConnectivityManager.NetworkCallback mNetworkCallback = new ConnectivityManager.NetworkCallback() {
 			@Override
 			public void onAvailable(Network network) {
 				SocketFactory sf = network.getSocketFactory();
-				publishToServer(activity, sf);
+				publishToServer(activity, sf, test);
 			}
 		};
 
@@ -90,14 +101,14 @@ public class Utils {
 
 			} else {
 				// You already are on a high-bandwidth network, so start your network request
-				publishToServer(activity, activeNetwork.getSocketFactory());
+				publishToServer(activity, activeNetwork.getSocketFactory(), test);
 			}
 		}
 	}
 
 
 
-	private static void publishToServer(final Activity activity, SocketFactory sf){
+	private static void publishToServer(final Activity activity, SocketFactory sf, boolean test){
 
 		 FTPUpdateTask.PostFTPTaskListener<String> postFTPSTaskListener = new FTPUpdateTask.PostFTPTaskListener<String>() {
 			@Override
@@ -134,26 +145,40 @@ public class Utils {
 		};
 
 		String protocol = loadTitlePref(activity,1,"protocol");
+		String host = loadTitlePref(activity,1,"host");
+		String username = loadTitlePref(activity,1,"username");
+		String password = loadTitlePref(activity,1,"password");
+		String remoteDirectory = loadTitlePref(activity,1,"remoteDirectory");
+		if(test){
+			protocol = TEST_PROTOCOL;
+			host =  TEST_HOST;
+			username = TEST_USER;
+			password = TEST_PASS;
+			remoteDirectory = TEST_URL;
+		}
 		String finalJsonString = loadTitlePref(activity,1,"lastPosition");
 		if(protocol.equals("SFTP")){
 			FTPUpdateTask ftpUpdate = new FTPUpdateTask(postFTPSTaskListener);
 			ftpUpdate.setSocketFactory(sf);
-			//ftpUpdate.view = activity.getCurrentFocus(); //activity.findViewById(R.id.coordinatorLayout);
+			ftpUpdate.setTest(test);
 			ftpUpdate.activity = activity;
-			ftpUpdate.SFTPHOST = loadTitlePref(activity,1,"host"); //"ftp.le-space.de"; //
-			ftpUpdate.SFTPUSER = loadTitlePref(activity,1,"username"); //"le-space"; //
-			ftpUpdate.SFTPPASS = loadTitlePref(activity,1,"password"); //"verbatim-stroll-month"; //
-			ftpUpdate.SFTPWORKINGDIR = loadTitlePref(activity,1,"remoteDirectory"); //"/home/le-space/public_html"; //
+
+			ftpUpdate.HOST = host;
+			ftpUpdate.USER = username;
+			ftpUpdate.PASS = password;
+			ftpUpdate.WORKINGDIR = remoteDirectory;
+
 			ftpUpdate.execute(finalJsonString);
 		}
 
 		if(protocol.equals("HTTP(S)")){
 			HTTPUpdateTask httpUpdate = new HTTPUpdateTask(postHTTPTaskListener);
+			httpUpdate.setTest(test);
 			httpUpdate.activity = activity;
-			httpUpdate.SHTTPHOST = loadTitlePref(activity,1,"host"); //"ftp.le-space.de"; //
-			httpUpdate.SHTTPUSER = loadTitlePref(activity,1,"username"); //"le-space"; //
-			httpUpdate.SHTTPPASS = loadTitlePref(activity,1,"password"); //"verbatim-stroll-month"; //
-			httpUpdate.SHTTURL = loadTitlePref(activity,1,"remoteDirectory"); //"/home/le-space/public_html"; //
+			httpUpdate.HOST = host;
+			httpUpdate.USER = username;
+			httpUpdate.PASS = password;
+			httpUpdate.HTTURL = remoteDirectory;
 			httpUpdate.execute(finalJsonString);
 		}
 

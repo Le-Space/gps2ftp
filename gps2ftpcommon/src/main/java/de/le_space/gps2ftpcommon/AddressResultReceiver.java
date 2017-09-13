@@ -100,7 +100,6 @@ public class AddressResultReceiver extends ResultReceiver {
 			else{
 				Intent intent = new Intent(Constants.LOCATION_NOT_FOUND);
 				LocalBroadcastManager.getInstance(activity.getApplicationContext()).sendBroadcast(intent);
-
 			}
 
 		} catch (JSONException e) {

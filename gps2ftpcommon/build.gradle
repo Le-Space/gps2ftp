@@ -6,9 +6,9 @@ android {
 
     defaultConfig {
         minSdkVersion 23
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 23
+        versionCode 13
+        versionName "0.13"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
@@ -25,14 +25,13 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:design:26.0.0'
-    compile 'com.android.support:appcompat-v7:26.0.0'
+
     compile 'com.jcraft:jsch:0.1.54'
     compile group: 'cz.msebera.android' , name: 'httpclient', version: '4.4.1.1'
 
-    compile 'com.google.android.gms:play-services-location:11.0.4'
-    compile 'com.google.android.gms:play-services-maps:11.0.4'
-    compile 'com.google.android.gms:play-services-wearable:11.0.4'
+    compile 'com.google.android.gms:play-services-location:11.2.0'
+    compile 'com.google.android.gms:play-services-maps:11.2.0'
+    compile 'com.google.android.gms:play-services-wearable:11.2.0'
 
     testCompile 'junit:junit:4.12'
 }

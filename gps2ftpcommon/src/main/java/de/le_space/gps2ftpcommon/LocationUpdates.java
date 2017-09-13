@@ -7,10 +7,8 @@ import android.content.pm.PackageManager;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -88,16 +86,18 @@ public class LocationUpdates {
 					|| ActivityCompat.shouldShowRequestPermissionRationale(activity,
 					android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
 
+				ActivityCompat.requestPermissions(activity, PERMISSIONS_LOCATION, 0);
 
+				/*
 				// Display a SnackBar with an explanation and a button to trigger the request.
-				Snackbar.make(activity.getCurrentFocus(), "Requesting Permissions",Snackbar.LENGTH_INDEFINITE)
-						.setAction("OK", new View.OnClickListener() {
+			//	Snackbar.make(activity.getCurrentFocus(), "Requesting Permissions",Snackbar.LENGTH_INDEFINITE)
+			//			.setAction("OK", new View.OnClickListener() {
 							@Override
 							public void onClick(View view) {
-								ActivityCompat.requestPermissions(activity, PERMISSIONS_LOCATION, 0);
-							}
+								//ActivityCompat.requestPermissions(activity, PERMISSIONS_LOCATION, 0);
+			//				}
 						})
-						.show();
+			//			.show();*/
 			} else {
 				//permissions have not been granted yet. Request them directly.
 				ActivityCompat.requestPermissions(activity, PERMISSIONS_LOCATION, 0);

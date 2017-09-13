@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.wearable.activity.WearableActivity;
 import android.support.wearable.view.DismissOverlayView;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -45,7 +46,7 @@ import static de.le_space.gps2ftpcommon.Constants.LOCATION_PUBLISH_SUCCESS;
 import static de.le_space.gps2ftpcommon.Constants.loadTitlePref;
 import static de.le_space.gps2ftpcommon.Constants.mGoogleApiClient;
 
-public class WearMainActivity extends Activity implements
+public class WearMainActivity extends WearableActivity implements
 		OnMapReadyCallback,
 		GoogleMap.OnMapLongClickListener,
 		GoogleApiClient.ConnectionCallbacks,
@@ -54,7 +55,7 @@ public class WearMainActivity extends Activity implements
 {
 
 	private static final String TAG = "Main";
-	private MapFragment mMapFragment;
+	private MapFragment mapFragment;
 	private GoogleMap googleMap;
 	private DismissOverlayView mDismissOverlay;
 	private Activity thisActivity;
@@ -104,7 +105,7 @@ public class WearMainActivity extends Activity implements
 		mDismissOverlay.setIntroText(R.string.intro_text);
 		mDismissOverlay.showIntroIfNecessary();
 
-		MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+		mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
 		mapFragment.getMapAsync(this);
 
 		if (mGoogleApiClient == null) {
@@ -118,6 +119,16 @@ public class WearMainActivity extends Activity implements
 
 		mGoogleApiClient.connect();
 		registerReceiver();
+		setAmbientEnabled();
+
+
+	}
+
+	@Override
+	public void onEnterAmbient(Bundle ambientDetails) {
+		super.onEnterAmbient(ambientDetails);
+	//	this.googleMap.
+		mapFragment.onEnterAmbient(ambientDetails);
 	}
 
 	public void registerReceiver(){
@@ -136,6 +147,10 @@ public class WearMainActivity extends Activity implements
 	public void onMapReady(GoogleMap googleMap) {
 		this.googleMap = googleMap;
 		this.googleMap.setOnMapLongClickListener(this);
+		this.googleMap.getUiSettings().setCompassEnabled(true);
+		this.googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+		//this.googleMap.getUiSettings().setMapToolbarEnabled(true);
+		this.googleMap.getUiSettings().setZoomControlsEnabled(true);
 		lu.startLocationUpdates(googleMap);
 	}
 
@@ -235,7 +250,7 @@ public class WearMainActivity extends Activity implements
 				return true;
 			} else if (keyCode == KeyEvent.KEYCODE_STEM_2) {
 				//lu.processLocation(mLastLocation);
-				Utils.publishPosition(thisActivity);
+				Utils.publishPosition(thisActivity,false);
 				return true;
 			} else if (keyCode == KeyEvent.KEYCODE_STEM_3) {
 				Toast.makeText(WearMainActivity.this," no function yet", Toast.LENGTH_SHORT).show();
