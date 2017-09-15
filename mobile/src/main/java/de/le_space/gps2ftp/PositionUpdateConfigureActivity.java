@@ -44,13 +44,13 @@ public class PositionUpdateConfigureActivity extends Activity {
 		setResult(RESULT_CANCELED);
 		thisActivity = this;
 		setContentView(R.layout.position_update_configure);
-		mAppWidgetProtocol = findViewById(R.id.appwidget_protocol);
-		mAppWidgetHost = findViewById(R.id.appwidget_host);
-		mAppWidgetUsername = findViewById(R.id.appwidget_username);
-		mAppWidgetPassword = findViewById(R.id.appwidget_password);
-		mAppWidgetUsername = findViewById(R.id.appwidget_username);
-		mAppWidgetRemoteDirectory = findViewById(R.id.appwidget_remoteDirectory);
-		mAppWidgetGoogleMapsApiKey = findViewById(R.id.appwidget_googleMapsApiKey);
+		mAppWidgetProtocol = (RadioGroup) findViewById(R.id.appwidget_protocol);
+		mAppWidgetHost = (EditText) findViewById(R.id.appwidget_host);
+		mAppWidgetUsername = (EditText) findViewById(R.id.appwidget_username);
+		mAppWidgetPassword = (EditText) findViewById(R.id.appwidget_password);
+		mAppWidgetUsername = (EditText) findViewById(R.id.appwidget_username);
+		mAppWidgetRemoteDirectory = (EditText) findViewById(R.id.appwidget_remoteDirectory);
+		mAppWidgetGoogleMapsApiKey = (EditText) findViewById(R.id.appwidget_googleMapsApiKey);
 
 		findViewById(R.id.connectionTest_button).setOnClickListener(mOnClickListenerConnecdtionTest);
 		findViewById(R.id.save_button).setOnClickListener(mOnClickListenerSave);
@@ -76,7 +76,7 @@ public class PositionUpdateConfigureActivity extends Activity {
 
 		public void onClick(View v) {
 
-			mAppWidgetProtocol =  findViewById(R.id.appwidget_protocol);
+			mAppWidgetProtocol = (RadioGroup) findViewById(R.id.appwidget_protocol);
 
 			Utils.TEST_PROTOCOL = ((RadioButton) findViewById(mAppWidgetProtocol.getCheckedRadioButtonId())).getText().toString();
 			Utils.TEST_USER = mAppWidgetUsername.getText().toString();
@@ -96,7 +96,7 @@ public class PositionUpdateConfigureActivity extends Activity {
 			final Context context = PositionUpdateConfigureActivity.this;
 
 			// When the button is clicked, store the string locally;
-			mAppWidgetProtocol =  findViewById(R.id.appwidget_protocol);
+			mAppWidgetProtocol = (RadioGroup) findViewById(R.id.appwidget_protocol);
 
 			String widgetProtocol = ((RadioButton) findViewById(mAppWidgetProtocol.getCheckedRadioButtonId())).getText().toString();
 

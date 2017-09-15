@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Locale;
 
 import cz.msebera.android.httpclient.HttpResponse;
 import cz.msebera.android.httpclient.client.HttpClient;
@@ -147,7 +148,7 @@ public class HTTPUpdateTask extends AsyncTask<String, Integer, String> {
 		String firstPart = HOST;
 		String secondPart = HTTURL;
 
-		if(!firstPart.toLowerCase().startsWith("http:") && !firstPart.toLowerCase().startsWith("https:"))
+		if(!firstPart.toLowerCase(Locale.getDefault()).startsWith("http:") && !firstPart.toLowerCase(Locale.getDefault()).startsWith("https:"))
 			firstPart = "https://"+firstPart;
 
 		if(firstPart.endsWith("/"))

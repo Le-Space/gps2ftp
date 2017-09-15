@@ -18,13 +18,12 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -55,7 +54,7 @@ import static de.le_space.gps2ftpcommon.Constants.loadTitlePref;
 import static de.le_space.gps2ftpcommon.Constants.mGoogleApiClient;
 import static de.le_space.gps2ftpcommon.Constants.saveTitlePref;
 
-public class MobileMainActivity extends AppCompatActivity implements
+public class MobileMainActivity extends Activity implements
 		OnMapReadyCallback,
 		DataApi.DataListener {
 
@@ -74,13 +73,13 @@ public class MobileMainActivity extends AppCompatActivity implements
 		setContentView(R.layout.activity_main);
 		thisActivity = this;
 
-		Toolbar toolbar = findViewById(R.id.toolbar);
-		setSupportActionBar(toolbar);
-		coordinatorLayout = findViewById(R.id.coordinatorLayout);
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		//setSupportActionBar(toolbar);
+		coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
 		lu = new LocationUpdates(this);
 
-		FloatingActionButton fab = findViewById(R.id.fab);
+		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		fab.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(final View view) {
@@ -257,7 +256,7 @@ public class MobileMainActivity extends AppCompatActivity implements
 					JSONObject lastPosition = getLastPosition();
 					mLastLocation.setLatitude(lastPosition.getDouble("lat"));//your coords of course
 					mLastLocation.setLongitude(lastPosition.getDouble("lng"));
-					googleMap.animateCamera( CameraUpdateFactory.zoomTo(new Float(lastPosition.getInt("zoom"))));
+					googleMap.animateCamera( CameraUpdateFactory.zoomTo((float) lastPosition.getInt("zoom")));
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}

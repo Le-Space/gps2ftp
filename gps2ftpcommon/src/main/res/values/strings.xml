@@ -3,12 +3,9 @@
     <string name="invalid_lat_long_used">Invalid lat long used</string>
     <string name="no_address_found">No address found</string>
     <string name="address_found">Address found</string>
-    <string name="got_new_data">got new device data</string>
-    <string name="no_geocoder_available">No geocoder available</string>
     <string name="location_published_successfully">Location published successfully</string>
     <string name="location_published_error">Location could not be published</string>
     <string name="publish_ftp">Publish position now?</string>
     <string name="googleMapsApiKey">AIzaSyBgMqhvL2oyciR4w2m1CVV2Z5OWEVSnhRI</string>
-    <string name="location_found">New Location Found</string>
     <string name="location_not_found">Location not found</string>
 </resources>

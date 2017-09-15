@@ -74,8 +74,8 @@ public class WearMainActivity extends WearableActivity implements
 		setContentView(R.layout.activity_maps);
 		thisActivity = this;
 
-		final FrameLayout topFrameLayout = findViewById(R.id.root_container);
-		final FrameLayout mapFrameLayout = findViewById(R.id.map_container);
+		final FrameLayout topFrameLayout = (FrameLayout) findViewById(R.id.root_container);
+		final FrameLayout mapFrameLayout = (FrameLayout) findViewById(R.id.map_container);
 
 		lu = new LocationUpdates(this);
 
@@ -101,7 +101,7 @@ public class WearMainActivity extends WearableActivity implements
 			}
 		});
 
-		mDismissOverlay = findViewById(R.id.dismiss_overlay);
+		mDismissOverlay = (DismissOverlayView) findViewById(R.id.dismiss_overlay);
 		mDismissOverlay.setIntroText(R.string.intro_text);
 		mDismissOverlay.showIntroIfNecessary();
 
@@ -294,7 +294,7 @@ public class WearMainActivity extends WearableActivity implements
 					mLastLocation.setLatitude(lastPosition.getDouble("lat"));//your coords of course
 					mLastLocation.setLongitude(lastPosition.getDouble("lng"));
 					googleMap.animateCamera( CameraUpdateFactory.newLatLng(new LatLng(mLastLocation.getLatitude(),mLastLocation.getLongitude())));
-					googleMap.animateCamera( CameraUpdateFactory.zoomTo(new Float(lastPosition.getInt("zoom"))));
+					googleMap.animateCamera( CameraUpdateFactory.zoomTo((float) lastPosition.getInt("zoom")));
 
 				} catch (JSONException e) {
 					Log.e(TAG, e.getMessage());
