@@ -23,15 +23,15 @@ Howto:
 
 Todo:
 -----
+- (wear) get location when offline
+    - https://developer.android.com/training/location/receive-location-updates.html
+    - https://developer.android.com/training/articles/wear-location-detection.html
+- (wear/app) add my location icon / gps 
+    - https://github.com/googlemaps/android-maps-utils/tree/master/demo
 - (wear) create notification when upload was (not) successful / open expanded notification on mobile for configuration
    - https://developer.android.com/training/wearables/notifications/creating.html
 - (wear) open settings dialog on mobile when connection to ftp server failed.
     - https://gist.github.com/gabrielemariotti/117b05aad4db251f7534
-- (wear/app) add my location icon / gps 
-    - https://github.com/googlemaps/android-maps-utils/tree/master/demo
-- (wear) get location when offline
-    - https://developer.android.com/training/location/receive-location-updates.html
-    - https://developer.android.com/training/articles/wear-location-detection.html
 - (help) add help (general usage mobile device, wear device, setup)    
 - (wear) communicate with phone (get configuration from phone) 
     - https://developer.android.com/training/wearables/data-layer/events.html
