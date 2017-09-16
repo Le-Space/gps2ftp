@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.util.concurrent.TimeUnit;
 
 import static de.le_space.gps2ftpcommon.Constants.mGoogleApiClient;
+import static de.le_space.gps2ftpcommon.Constants.saveTitlePref;
 
 /**
  * Created by Nico Krause (nico@le-space.de) on 04.09.17. (Le Space UG)
@@ -156,6 +157,11 @@ public class LocationUpdates {
 
 
 	public void stopLocationUpdates() {
+		if(googleMap!=null){
+			saveTitlePref(activity.getApplicationContext(),1, "CameraPosition",String.valueOf(googleMap.getCameraPosition().zoom));
+			Log.d(TAG,"saved CameraPosition Zoom:"+googleMap.getCameraPosition().zoom);
+		}
+
 		//mFusedLocationClient.removeLocationUpdates(mLocationCallback); creates an error... not sure why
 		//mFusedLocationClient.removeLocationUpdates(mLocationCallback);
 	}

@@ -13,5 +13,5 @@
     <string name="save_widget">Save</string>
     <string name="test_connection">Test Connection</string>
     <string name="protocol_sftp">SFTP</string>
-    <string name="protocol_shttp">shttp</string>
+    <string name="protocol_shttp">HTTP(S)</string>
 </resources>

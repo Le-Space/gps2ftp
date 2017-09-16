@@ -1,7 +1,6 @@
 package de.le_space.gps2ftp;
 
 
-import android.os.Build;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -39,7 +38,7 @@ public class SFTPTest {
 	public void grantPermission() {
 
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+		//if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
 			getInstrumentation().getUiAutomation().executeShellCommand(
 					"pm grant " + getTargetContext().getPackageName()
@@ -48,7 +47,8 @@ public class SFTPTest {
 			getInstrumentation().getUiAutomation().executeShellCommand(
 					"pm grant " + getTargetContext().getPackageName()
 							+ " android.permission.ACCESS_FINE_LOCATION");
-		}
+		//}
+	}
 
 		//https://github.com/apache/mina-sshd
 		//https://stackoverflow.com/questions/11837948/using-apache-mina-as-a-mock-in-memory-sftp-server-for-unit-testing
@@ -90,7 +90,7 @@ public class SFTPTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} */
-	}
+
 
 
 
@@ -98,7 +98,7 @@ public class SFTPTest {
 	public void sFTPTest() {
 
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -109,7 +109,7 @@ public class SFTPTest {
 
 
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -123,12 +123,12 @@ public class SFTPTest {
 		floatingActionButton.perform(click());
 
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 
-		appCompatButton = onView(
+		 appCompatButton = onView(
 				allOf(withId(android.R.id.button2), withText("Cancel")));
 		appCompatButton.perform(click());
 
@@ -162,11 +162,26 @@ public class SFTPTest {
 		ViewInteraction editText4 = onView(
 				withId(R.id.appwidget_remoteDirectory));
 		editText3.perform(scrollTo(), replaceText("/home/le-space/public_html"), closeSoftKeyboard());
+		//String ts = getInstrumentation().getContext().getString(R.string.test_connection);
+		String ts = getTargetContext().getString(R.string.test_connection);
+		/*Context testContext = getInstrumentation().getContext();
+		Resources testRes = testContext.getResources();
+		String ts = testRes.getString(R.string.test_connection);*/
+
+		/*InputStream ts = testRes.openRawResource(R.raw.your_res);
+
+		assertNotNull(testRes); */
 
 		ViewInteraction button = onView(
-				allOf(withId(R.id.save_button), withText("Save")));
+				allOf(withId(R.id.connectionTest_button), withText(ts)));
 		button.perform(click());
 
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+/*
 		ViewInteraction floatingActionButton2 = onView(
 				allOf(withId(R.id.fab),
 						withParent(allOf(withId(R.id.coordinatorLayout),
@@ -191,7 +206,7 @@ public class SFTPTest {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		}
+		}*/
 		//we are automatically in the settings now because the password is wrong
 		ViewInteraction editText10 = onView(
 				withId(R.id.appwidget_password));
@@ -215,9 +230,9 @@ public class SFTPTest {
 			e.printStackTrace();
 		}
 
-		ViewInteraction appCompatButton5 = onView(
-				allOf(withId(android.R.id.button1), withText("OK")));
-		appCompatButton5.perform(click());
+//		ViewInteraction appCompatButton5 = onView(
+//				allOf(withId(android.R.id.button1), withText("OK")));
+//		appCompatButton5.perform(click());
 
 	}
 

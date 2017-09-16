@@ -53,7 +53,6 @@ import static de.le_space.gps2ftpcommon.Constants.LOCATION_PUBLISH_ERROR;
 import static de.le_space.gps2ftpcommon.Constants.LOCATION_PUBLISH_SUCCESS;
 import static de.le_space.gps2ftpcommon.Constants.loadTitlePref;
 import static de.le_space.gps2ftpcommon.Constants.mGoogleApiClient;
-import static de.le_space.gps2ftpcommon.Constants.saveTitlePref;
 
 public class MobileMainActivity extends AppCompatActivity implements
 		OnMapReadyCallback,
@@ -175,8 +174,6 @@ public class MobileMainActivity extends AppCompatActivity implements
 	protected void onPause() {
 		super.onPause();
 		lu.stopLocationUpdates();
-		saveTitlePref(this.getApplicationContext(),1, "CameraPosition",String.valueOf(googleMap.getCameraPosition().zoom));
-		Log.d(TAG,"saved CameraPosition Zoom:"+googleMap.getCameraPosition().zoom);
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package de.le_space.gps2ftp;
 
 
-import android.os.Build;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -34,7 +33,7 @@ public class HTTPPublishTest {
 
 	@Before
 	public void grantPermission() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+	//	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
 			getInstrumentation().getUiAutomation().executeShellCommand(
 					"pm grant " + getTargetContext().getPackageName()
@@ -43,14 +42,14 @@ public class HTTPPublishTest {
 			getInstrumentation().getUiAutomation().executeShellCommand(
 					"pm grant " + getTargetContext().getPackageName()
 							+ " android.permission.ACCESS_FINE_LOCATION");
-		}
+	//	}
 	}
 
 	@Test
 	public void sHTTPPublishTest() {
 
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -61,7 +60,7 @@ public class HTTPPublishTest {
 
 
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
