@@ -7,8 +7,8 @@ android {
         applicationId "de.le_space.gps2ftp"
         minSdkVersion 25
         targetSdkVersion 25
-        versionCode 16
-        versionName "0.16"
+        versionCode 17
+        versionName "0.17"
     }
     buildTypes {
         release {
